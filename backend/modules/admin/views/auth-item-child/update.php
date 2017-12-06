@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = 'ACTUALIZAR';
 
                         -->
                         <header>
-                            <span class="widget-icon"> <i class="fa fa-check-circle"></i> </span>
+                            <span class="widget-icon"> <i class="fa fa-cogs"></i> </span>
 
                             <h2><?= Html::encode($this->title) ?></h2>
                         </header>

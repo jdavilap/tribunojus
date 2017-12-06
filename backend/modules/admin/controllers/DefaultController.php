@@ -19,5 +19,9 @@ class DefaultController extends Controller
     {
         return $this->render('index');
     }
+    public function actionSecurity()
+    {
+        return $this->render('security');
+    }
 
 }

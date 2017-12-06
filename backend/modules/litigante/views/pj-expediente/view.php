@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         -->
                         <header>
-                            <span class="widget-icon"> <i class="fa fa-check-circle"></i> </span>
+                            <span class="widget-icon"> <i class="fa fa-folder"></i> </span>
 
                             <h2><?= Html::encode($this->title) ?></h2>
                         </header>

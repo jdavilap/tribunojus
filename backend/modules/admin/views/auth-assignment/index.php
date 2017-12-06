@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </p>
                     <!-- Widget ID (each widget will need unique ID)-->
                     <div class="jarviswidget jarviswidget-color-blueDark jarviswidget-sortable" id="wid-id-0"
-                         data-widget-editbutton="false" data-widget-collapsed="true">
+                         data-widget-editbutton="true" data-widget-collapsed="true">
                         <!-- widget options:
                             usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
 
@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         -->
                         <header>
-                            <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                            <span class="widget-icon"> <i class="fa fa-cogs"></i> </span>
 
                             <h2><?= Html::encode($this->title) ?></h2>
                         </header>

@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         -->
                         <header>
-                            <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                            <span class="widget-icon"> <i class="fa fa-folder-open"></i> </span>
 
                             <h2><?= Html::encode($this->title) ?></h2>
                         </header>

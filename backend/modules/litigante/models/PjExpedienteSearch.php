@@ -41,12 +41,15 @@ class PjExpedienteSearch extends PjExpediente
      */
     public function search($params)
     {
-        $query = PjExpediente::find()->where(['id_cliente'=> Yii::$app->user->id]);
+        $query = PjExpediente::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination'=> [
+                'pageSize'=> 5
+            ]
         ]);
 
         $this->load($params);

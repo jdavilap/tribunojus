@@ -80,8 +80,17 @@ class PjLitiganteController extends Controller
 
             if ($this->notIsAbogado($model->username)) {
                 if ($model_sign->signup()) {
-                    $model->save();
-                    return $this->redirect(['view', 'id' => $model->id, 'username' => $model->username]);
+                    $model->set_expediente = 0;
+                    if($model->save()){
+                        Yii::$app->session->setFlash('success','SE HA CREADO CORRECTAMENTE EL LITIGANTE');
+                        return $this->redirect(['view', 'id' => $model->id, 'username' => $model->username]);
+                    }else{
+                        return $this->render('create', [
+                            'model' => $model,
+                            'model_sign' => $model_sign
+                        ]);
+                    }
+
                 } else {
                     return $this->render('create', [
                         'model' => $model,
@@ -107,7 +116,7 @@ class PjLitiganteController extends Controller
     public function notIsAbogado($username)
     {
         if (PjAbogado::findOne(['username' => $username])) {
-            return Yii::$app->session->setFlash('danger', '! Por favor escoja otro nombre de usuario, este ya está siendo usado como un abogado ¡');
+            return Yii::$app->session->setFlash('danger', '! POR FAVOR ESCOJA OTRO USUARIO, ESTE YA ESTA SIENDO USADO COMO UN ABOGADO ¡');
         } else {
             return true;
 
@@ -123,14 +132,31 @@ class PjLitiganteController extends Controller
      */
     public function actionUpdate($id, $username)
     {
-
         $model = $this->findModel($id, $username);
+        $model_sign = SignupForm::findModel($username);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id, 'username' => $model->username]);
+        if ($model->load(Yii::$app->request->post()) && $model->load(Yii::$app->request->post())) {
+            $model_sign->username = $model->username;
+            if ($this->notIsAbogado($model->username)) {
+                if ($model->save()) {
+                    $model_sign->signup_update($model_sign);
+                    return $this->redirect(['view', 'id' => $model->id, 'username' => $model->username]);
+                } else {
+                    return $this->render('update', [
+                        'model' => $model,
+                        'model_sign' => $model_sign
+                    ]);
+                }
+            } else {
+                return $this->render('update', [
+                    'model' => $model,
+                    'model_sign' => $model_sign
+                ]);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'model_sign' => $model_sign
             ]);
         }
     }

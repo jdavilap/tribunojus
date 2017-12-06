@@ -11,6 +11,7 @@ use backend\modules\admin\models\PjAbogado;
  * @property integer $id
  * @property string $username
  * @property integer $id_abogado
+ * @property integer $set_expediente
  *
  * @property PjExpediente[] $pjExpedientes
  * @property PjAbogado $idAbogado
@@ -32,7 +33,7 @@ class PjLitigante extends \yii\db\ActiveRecord
     {
         return [
             [['username', 'id_abogado'], 'required'],
-            [['id_abogado'], 'integer'],
+            [['id_abogado','set_expediente'], 'integer'],
             [['username'], 'string', 'max' => 255],
             [['username'], 'unique'],
             [['id_abogado'], 'exist', 'skipOnError' => true, 'targetClass' => PjAbogado::className(), 'targetAttribute' => ['id_abogado' => 'id']],
@@ -46,8 +47,9 @@ class PjLitigante extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'username' => 'Username',
-            'id_abogado' => 'Id Abogado',
+            'username' => 'USUARIO',
+            'id_abogado' => 'ABOGADO',
+            'set_expediente' => 'EXPEDIENTE'
         ];
     }
 

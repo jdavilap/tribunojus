@@ -30,7 +30,7 @@ AppAsset::register($this);
 <header id="header">
     <div id="logo-group">
         <!-- PLACE YOUR LOGO HERE -->
-        <span id="logo"> <img src="img/logo.png" alt="SmartAdmin"> </span>
+        <span id="logo"> <img src="img/logo-tribunojus.png"> </span>
         <!-- END LOGO PLACEHOLDER -->
         <!-- Note: The activity badge color changes when clicked and resets the number to 0
 					 Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->
@@ -40,25 +40,26 @@ AppAsset::register($this);
     <div class="project-context hidden-xs">
 
         <span class="label"><?= Yii::$app->user->identity->username ?></span>
-        <span class="project-selector dropdown-toggle" data-toggle="dropdown">Configuración <i class="fa fa-angle-down"></i></span>
+        <span class="project-selector dropdown-toggle" data-toggle="dropdown">Configuración <i
+                class="fa fa-angle-down"></i></span>
 
         <!-- Suggestion: populate this list with fetch and push technique -->
         <ul class="dropdown-menu">
             <li>
                 <?php
-                $model = \backend\modules\admin\models\User::find()->where(['username'=> Yii::$app->user->identity->username])->one();
+                $model = \backend\modules\admin\models\User::find()->where(['username' => Yii::$app->user->identity->username])->one();
                 ?>
-                <?=Html::a('Configuración: <i class="fa fa-user"></i> Perfil', ['/admin/user/view', 'id' => $model->id], ['class' => 'btn btn-link']) ?>
+                <?= Html::a('Configuración: <i class="fa fa-user"></i> Perfil', ['/admin/user/view', 'id' => $model->id], ['class' => 'btn btn-link']) ?>
             </li>
             <li>
                 <?= Html::a('Configuración: <i class="fa fa-lg fa-sign-out"></i> Salir', ['/site/logout'], [
                     'class' => 'btn btn-link',
                     'data' => [
-                        'confirm' => '¿Esta seguro que desea cerrar la seccion '.'('. Yii::$app->user->identity->username .')'.'?',
+                        'confirm' => '¿Esta seguro que desea cerrar la seccion ' . '(' . Yii::$app->user->identity->username . ')' . '?',
                         'method' => 'post',
 
                     ],
-                    'title'=>'Salir',
+                    'title' => 'Salir',
 
                 ]) ?>
             </li>
@@ -72,12 +73,14 @@ AppAsset::register($this);
     <div class="pull-right">
         <!-- collapse menu button -->
         <div id="hide-menu" class="btn-header pull-right">
-            <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fa fa-reorder"></i></a> </span>
+            <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i
+                        class="fa fa-reorder"></i></a> </span>
         </div>
         <!-- end collapse menu -->
         <!-- fullscreen button -->
         <div id="fullscreen" class="btn-header transparent pull-right">
-            <span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Pantalla Completa"><i class="fa fa-arrows-alt"></i></a> </span>
+            <span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Pantalla Completa"><i
+                        class="fa fa-arrows-alt"></i></a> </span>
         </div>
         <!-- end fullscreen button -->
     </div>
@@ -98,50 +101,54 @@ AppAsset::register($this);
     <nav>
         <ul>
             <li class="">
-                <a href="<?php Yii::$app->homeUrl?>?r=site/index" title="INICIO"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">INICIO</span></a>
+                <a href="<?php Yii::$app->homeUrl ?>?r=site/index" title="INICIO"><i class="fa fa-lg fa-fw fa-home"></i>
+                    <span class="menu-item-parent">INICIO</span></a>
             </li>
             <li class="">
                 <a href="#"><i class="fa fa-lg fa-fw fa-cogs"></i><span class="menu-item-parent">ADMIN WEB</span> </a>
                 <ul>
                     <li class="">
-                        <a href="<?php Yii::$app->homeUrl?>?r=admin/user">USUARIOS</a>
+                        <a href="<?php Yii::$app->homeUrl ?>?r=admin/user">USUARIOS</a>
                     </li>
                     <li class="">
-                        <a href="<?php Yii::$app->homeUrl?>?r=admin/pj-abogado">ABOGADOS</a>
+                        <a href="<?php Yii::$app->homeUrl ?>?r=admin/pj-abogado">ABOGADOS</a>
                     </li>
                     <li class="">
-                        <a href="#"><i class="fa fa-lg fa-fw fa-lock"></i><span class="menu-item-parent">RBAC SEGURIDAD</span></a>
+                        <a href="#"><i class="fa fa-lg fa-fw fa-lock"></i><span
+                                class="menu-item-parent">RBAC SEGURIDAD</span></a>
                         <ul>
                             <li class="">
-                                <a href="<?php Yii::$app->homeUrl?>?r=admin/auth-item">REGLAS</a>
+                                <a href="<?php Yii::$app->homeUrl ?>?r=admin/auth-item">REGLAS</a>
                             </li>
                             <li class="">
-                                <a href="<?php Yii::$app->homeUrl?>?r=admin/auth-item-child">REGLAS EMPAREJADAS</a>
+                                <a href="<?php Yii::$app->homeUrl ?>?r=admin/auth-item-child">REGLAS EMPAREJADAS</a>
                             </li>
                             <li class="">
-                            <a href="<?php Yii::$app->homeUrl?>?r=admin/auth-assignment">ASIGNACIONES</a>
+                                <a href="<?php Yii::$app->homeUrl ?>?r=admin/auth-assignment">ASIGNACIONES</a>
                             </li>
                         </ul>
                     </li>
                 </ul>
             </li>
             <li class="">
-                <a href="#"><i class="fa fa-lg fa-fw fa-user"></i><span class="menu-item-parent">ADMIN CLIENTES</span></a>
-                <ul>
-                    <li class="">
-                        <a href="<?php Yii::$app->homeUrl?>?r=litigante/pj-litigante">LITIGANTE</a>
-                    </li>
-                    <li class="">
-                        <a href="<?php Yii::$app->homeUrl?>?r=litigante/pj-sub-expediente">SUB EXPEDIENTE</a>
-                    </li>
-                    <li class="">
-                        <a href="<?php Yii::$app->homeUrl?>?r=litigante/pj-escrito">ESCRITO</a>
-                    </li>
-                    <li class="">
-                        <a href="<?php Yii::$app->homeUrl?>?r=litigante/pj-anexo">ANEXO</a>
-                    </li>
-
-                </ul>
+                <a href="<?php Yii::$app->homeUrl ?>?r=litigante/pj-litigante"><i class="fa fa-lg fa-fw fa-user"></i><span
+                        class="menu-item-parent">LITIGANTE</span></a>
+            </li>
+            <li class="">
+                <a href="<?php Yii::$app->homeUrl ?>?r=litigante/pj-expediente"><i class="fa fa-lg fa-fw fa-folder"></i><span
+                        class="menu-item-parent">EXPEDIENTE</span></a>
+            </li>
+            <li class="">
+                <a href="<?php Yii::$app->homeUrl ?>?r=litigante/pj-sub-expediente"><i class="fa fa-lg fa-fw fa-folder-open"></i><span
+                        class="menu-item-parent">SUB EXPEDIENTE</span></a>
+            </li>
+            <li class="">
+                <a href="<?php Yii::$app->homeUrl ?>?r=litigante/pj-escrito"><i class="fa fa-lg fa-fw fa-edit"></i><span
+                        class="menu-item-parent">ESCRITO</span></a>
+            </li>
+            <li class="">
+                <a href="<?php Yii::$app->homeUrl ?>?r=litigante/pj-anexo"><i class="fa fa-lg fa-fw fa-paperclip"></i><span
+                        class="menu-item-parent">ANEXO</span></a>
             </li>
         </ul>
     </nav>
@@ -180,8 +187,7 @@ AppAsset::register($this);
 <?php
 echo "<script>";
 echo "homeUrl = '" . Yii::$app->homeUrl . "';";
-foreach (Yii::$app->params as $key => $param)
-{
+foreach (Yii::$app->params as $key => $param) {
     echo "$key = '$param';";
 }
 echo "</script>";

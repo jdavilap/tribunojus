@@ -2,6 +2,7 @@
 
 namespace backend\modules\litigante\controllers;
 
+use backend\modules\litigante\models\PjLitigante;
 use Yii;
 use backend\modules\litigante\models\PjExpediente;
 use backend\modules\litigante\models\PjExpedienteSearch;
@@ -65,6 +66,7 @@ class PjExpedienteController extends Controller
     public function actionCreate($id_cliente)
     {
         $model = new PjExpediente();
+        $model_litigante = PjLitigante::findOne(['id'=>$id_cliente]);
 
         if ($model->load(Yii::$app->request->post())) {
 
@@ -72,6 +74,9 @@ class PjExpedienteController extends Controller
             $model->fecha_inicio = mktime(null, null, null, $model->fecha_inicio['month'], $model->fecha_inicio['day'], $model->fecha_inicio['year'], null);
 
             $model->id_cliente = $id_cliente;
+            $model_litigante->set_expediente= 1;
+            $model_litigante->save();
+
             if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id, 'n_expendiente' => $model->n_expendiente]);
             }
@@ -121,7 +126,12 @@ class PjExpedienteController extends Controller
      */
     public function actionDelete($id, $n_expendiente)
     {
-        $this->findModel($id, $n_expendiente)->delete();
+        $model = $this->findModel($id, $n_expendiente);
+
+        $modelLitigante = PjLitigante::findOne(['id'=> $model->id_cliente]);
+        $modelLitigante->set_expediente = 0;
+        $modelLitigante->save();
+        $model->delete();
 
         return $this->redirect(['index']);
     }

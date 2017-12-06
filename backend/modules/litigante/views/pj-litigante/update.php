@@ -1,13 +1,14 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\litigante\models\PjLitigante */
 
 $this->title = 'ACTUALIZAR LITIGANTE: ' . $model->username;
 $this->params['breadcrumbs'][] = ['label' => 'LITIGANTES', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id, 'username' => $model->username]];
+$this->params['breadcrumbs'][] = ['label' => $model->username, 'url' => ['view', 'id' => $model->id, 'username' => $model->username]];
 $this->params['breadcrumbs'][] = 'ACTUALIZAR';
 ?>
 <div class="pj-litigante-update">
@@ -34,16 +35,38 @@ $this->params['breadcrumbs'][] = 'ACTUALIZAR';
 
                         -->
                         <header>
-                            <span class="widget-icon"> <i class="fa fa-check-circle"></i> </span>
+                            <span class="widget-icon"> <i class="fa fa-user"></i> </span>
                             <h2><?= Html::encode($this->title) ?></h2>
                         </header>
                         <!-- widget div-->
                         <div>
                             <!-- widget content -->
                             <div class="widget-body">
-                                <?= $this->render('_form', [
-                                    'model' => $model,
-                                ]) ?>
+                                <?php $form = ActiveForm::begin(); ?>
+
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+
+                                    <?= $form->field($model_sign, 'first_name')->textInput(['maxlength' => true]) ?>
+
+                                    <?= $form->field($model_sign, 'last_name')->textInput(['maxlength' => true]) ?>
+
+                                    <?= $form->field($model_sign, 'dni')->textInput(['maxlength' => true]) ?>
+                                </div>
+
+                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <?= $form->field($model_sign, 'domicilio')->textInput(['maxlength' => true]) ?>
+
+                                    <?= $form->field($model_sign, 'password_hash')->passwordInput(['maxlength' => true,'disabled'=> 'disabled']) ?>
+
+                                    <?= $form->field($model_sign, 'email')->textInput(['maxlength' => true]) ?>
+
+                                    <div class="form-group">
+                                        <?= Html::submitButton('<i class="fa fa-check-circle"></i> Aceptar ', ['class' => 'btn btn-success', 'name' => 'signup-button']) ?>
+                                    </div>
+                                </div>
+
+                                <?php ActiveForm::end(); ?>
                             </div>
                         </div>
                         <!-- end widget div -->

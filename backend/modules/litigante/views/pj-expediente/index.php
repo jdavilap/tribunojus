@@ -18,9 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <!-- NEW WIDGET START -->
                 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <p>
-                        <?= Html::a('<i class="fa fa-plus-circle"></i> CREAR EXPEDIENTE', ['create'], ['class' => 'btn btn-success']) ?>
-                    </p>
                     <!-- Widget ID (each widget will need unique ID)-->
                     <div class="jarviswidget jarviswidget-color-blueDark jarviswidget-sortable" id="wid-id-0"
                          data-widget-editbutton="false" data-widget-collapsed="true">
@@ -38,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         -->
                         <header>
-                            <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                            <span class="widget-icon"> <i class="fa fa-folder"></i> </span>
 
                             <h2><?= Html::encode($this->title) ?></h2>
                         </header>
@@ -60,21 +57,21 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'dataProvider' => $dataProvider,
                                     'filterModel' => $searchModel,
                                     'columns' => [
-                                        ['class' => 'yii\grid\SerialColumn'],
+                                        //['class' => 'yii\grid\SerialColumn'],
 
-                                        'id',
+                                        //'id',
                                         'n_expendiente',
                                         'juez',
-                                        'fecha_inicio',
-                                        'observacion',
-                                        // 'materia',
-                                        // 'etapa_procesal',
-                                        // 'ubicacion',
-                                        // 'sumilla',
-                                        // 'distrito_judicial',
-                                        // 'proceso',
-                                        // 'especialidad',
-                                        // 'estado',
+                                        'fecha_inicio:date',
+                                        //'observacion',
+                                        //'materia',
+                                        'etapa_procesal',
+                                        'ubicacion',
+                                        //'sumilla',
+                                        'distrito_judicial',
+                                        //'proceso',
+                                        //'especialidad',
+                                        //'estado',
                                         // 'fecha_conclusion',
                                         // 'motivo_conclusion',
                                         // 'id_cliente',

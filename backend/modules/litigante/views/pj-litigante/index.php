@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         -->
                         <header>
-                            <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                            <span class="widget-icon"> <i class="fa fa-user"></i> </span>
 
                             <h2><?= Html::encode($this->title) ?></h2>
                         </header>
@@ -60,9 +60,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'dataProvider' => $dataProvider,
                                     'filterModel' => $searchModel,
                                     'columns' => [
-                                        ['class' => 'yii\grid\SerialColumn'],
+                                        //['class' => 'yii\grid\SerialColumn'],
 
-                                        'id',
+                                        //'id',
                                         'username',
                                         'id_abogado',
 

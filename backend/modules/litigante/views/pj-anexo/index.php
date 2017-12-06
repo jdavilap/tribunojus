@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\litigante\models\PjAnexoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -37,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         -->
                         <header>
-                            <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                            <span class="widget-icon"> <i class="fa fa-paperclip"></i> </span>
 
                             <h2><?= Html::encode($this->title) ?></h2>
                         </header>
