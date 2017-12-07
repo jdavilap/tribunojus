@@ -38,7 +38,7 @@ class AppAsset extends AssetBundle
         //'js/plugin/fastclick/fastclick.min.js',
         //'js/demo.min.js',
         'js/app.min.js',
-        //'js/be/drow_list_abogado.js',
+        'js/be/subexpediente.js',
         //'js/be/drow_list_update_abogado.js',
         //'js/be/modal_file.js',
         'js/be/plugins.js',

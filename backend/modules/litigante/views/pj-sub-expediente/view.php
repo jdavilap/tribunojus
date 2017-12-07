@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\litigante\models\PjSubExpediente */
 
-$this->title = $model->id;
+$this->title = 'SUB EXPEDIENTE: '. $model->sub_expediente;
 $this->params['breadcrumbs'][] = ['label' => 'SUB EXPEDIENTE', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -52,12 +52,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         <!-- widget div-->
                         <div>
                             <!-- widget content -->
-                            <div class="widget-body">
+                            <div class="widget-body no-padding">
                                 <?= DetailView::widget([
                                     'model' => $model,
                                     'attributes' => [
-                                        'id',
-                                        'id_expediente',
+                                        //'id',
+                                        //'id_expediente',
                                         'sub_expediente',
                                     ],
                                 ]) ?>
@@ -72,6 +72,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
             </div>
             <!-- end row -->
-        </div>
+        </div class="well">
     </div>
 </div>

@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <!-- widget div-->
                         <div>
                             <!-- widget content -->
-                            <div class="widget-body">
+                            <div class="widget-body no-padding">
                                 <?= DetailView::widget([
                                     'model' => $model,
                                     'attributes' => [

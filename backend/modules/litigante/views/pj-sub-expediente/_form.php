@@ -1,7 +1,9 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
+use backend\modules\litigante\models\PjExpediente;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\litigante\models\PjSubExpediente */
@@ -12,7 +14,12 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id_expediente')->textInput() ?>
+    <?= $form->field($model, 'id_expediente')->dropDownList(ArrayHelper::map(PjExpediente::find()->all(),'id','n_expendiente'),[
+        'class'=>'select2',
+        'style'=> 'whith: 100%',
+        'prompt'=> 'SELECCIONE UN EXPEDIENTE...',
+        'id'=> 'subexpediente'
+    ]) ?>
 
     <?= $form->field($model, 'sub_expediente')->textInput(['maxlength' => true]) ?>
 

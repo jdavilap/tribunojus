@@ -74,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         //'estado',
                                         // 'fecha_conclusion',
                                         // 'motivo_conclusion',
-                                        // 'id_cliente',
+                                        'id_cliente',
 
                                         ['class' => 'yii\grid\ActionColumn'],
                                     ],

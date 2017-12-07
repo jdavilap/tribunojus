@@ -2,12 +2,16 @@
 
 namespace backend\modules\litigante\controllers;
 
+use backend\modules\litigante\models\PjExpedienteSearch;
 use Yii;
 use backend\modules\litigante\models\PjSubExpediente;
+use backend\modules\litigante\models\PjExpediente;
 use backend\modules\litigante\models\PjSubExpedienteSearch;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\JsonParser;
 
 /**
  * PjSubExpedienteController implements the CRUD actions for PjSubExpediente model.
@@ -123,6 +127,34 @@ class PjSubExpedienteController extends Controller
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    /**
+     * Devuelve el numero de expediente
+     * Si ya existe un sub expediente devuelve el ultimo numero
+     * de subexpediente creado.
+     *
+     **/
+    public function actionGetexpediente($id_file)
+    {
+        $sub_file = PjSubExpediente::findAll(['id_expediente' => $id_file]);
+
+        $sub_file_aux = null;
+
+        if (!$sub_file) {
+            $file_temp = PjExpediente::findOne(['id' => $id_file]);
+            echo Json::encode($file_temp->n_expendiente);
+        } else {
+            foreach ($sub_file as $sf) {
+                if ($sub_file_aux == null) {
+                    $sub_file_aux = $sf;
+                } else {
+                    $sub_file_aux = $sf;
+                }
+
+            }
+            echo Json::encode($sub_file_aux->sub_expediente);
         }
     }
 }

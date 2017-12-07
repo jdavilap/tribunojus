@@ -187,9 +187,6 @@ AppAsset::register($this);
 <?php
 echo "<script>";
 echo "homeUrl = '" . Yii::$app->homeUrl . "';";
-foreach (Yii::$app->params as $key => $param) {
-    echo "$key = '$param';";
-}
 echo "</script>";
 ?>
 <?php $this->endBody() ?>

@@ -56,12 +56,18 @@ class PjLitiganteController extends Controller
      */
     public function actionView($id, $username)
     {
+        if(PjLitigante::findOne(['id'=> $id])->set_expediente == 0){
+            Yii::$app->session->setFlash('createFile');
+            return $this->render('view', [
+                'model' => $this->findModel($id, $username)
 
+            ]);
+        }
         return $this->render('view', [
-            'model' => $this->findModel($id, $username),
-            'model_file' => PjExpediente::findOne(['id_cliente' => $id])
+            'model' => $this->findModel($id, $username)
 
         ]);
+
     }
 
     /**
