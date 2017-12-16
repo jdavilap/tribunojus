@@ -1,0 +1,8 @@
+1- clientes
+2- abogados
+3 - expedientes es un proceso judicial
+4-  Cada cliente pude tener mas de un proceso judicial
+5- cada proceso judicial pertenece a un archivo y este a su vez puede tener varios sub archivos 
+6- Archivos  pertenecen a un Distrito Judicial
+7- Notificaciones 
+
