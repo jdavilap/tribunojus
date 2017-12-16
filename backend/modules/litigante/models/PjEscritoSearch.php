@@ -15,12 +15,21 @@ class PjEscritoSearch extends PjEscrito
     /**
      * @inheritdoc
      */
+    public $globalSearch;
+
     public function rules()
     {
         return [
             [['id', 'id_expediente', 'id_sub_expediente'], 'integer'],
-            [['fecha', 'escrito'], 'safe'],
+            [['fecha', 'escrito','globalSearch'], 'safe'],
             [['notificacion'], 'boolean'],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'globalSearch' => ''
         ];
     }
 
@@ -58,16 +67,7 @@ class PjEscritoSearch extends PjEscrito
             return $dataProvider;
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'fecha' => $this->fecha,
-            'notificacion' => $this->notificacion,
-            'id_expediente' => $this->id_expediente,
-            'id_sub_expediente' => $this->id_sub_expediente,
-        ]);
-
-        $query->andFilterWhere(['like', 'escrito', $this->escrito]);
+        $query->orFilterWhere(['like', 'escrito', $this->globalSearch]);
 
         return $dataProvider;
     }

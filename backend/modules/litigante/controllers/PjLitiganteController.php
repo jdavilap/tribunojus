@@ -3,13 +3,14 @@
 namespace backend\modules\litigante\controllers;
 
 use backend\modules\admin\models\PjAbogado;
+use backend\modules\admin\models\User;
 use Yii;
 use backend\modules\litigante\models\PjLitigante;
 use backend\modules\litigante\models\PjExpediente;
 use backend\modules\litigante\models\PjLitiganteSearch;
 use frontend\models\SignupForm;
 use yii\web\Controller;
-
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -39,13 +40,17 @@ class PjLitiganteController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new PjLitiganteSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (Yii::$app->user->can('ver-litigante')) {
+            $searchModel = new PjLitiganteSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else {
+            throw new ForbiddenHttpException;
+        }
     }
 
     /**
@@ -56,17 +61,21 @@ class PjLitiganteController extends Controller
      */
     public function actionView($id, $username)
     {
-        if(PjLitigante::findOne(['id'=> $id])->set_expediente == 0){
-            Yii::$app->session->setFlash('createFile');
+        if(Yii::$app->user->can('ver-litigante')) {
+            if (PjLitigante::findOne(['id' => $id])->set_expediente == 0) {
+                Yii::$app->session->setFlash('createFile');
+                return $this->render('view', [
+                    'model' => $this->findModel($id, $username)
+
+                ]);
+            }
             return $this->render('view', [
                 'model' => $this->findModel($id, $username)
 
             ]);
+        }else{
+            throw new ForbiddenHttpException;
         }
-        return $this->render('view', [
-            'model' => $this->findModel($id, $username)
-
-        ]);
 
     }
 
@@ -77,46 +86,51 @@ class PjLitiganteController extends Controller
      */
     public function actionCreate()
     {
-        $model = new PjLitigante();
-        $model_sign = new SignupForm();
+        if (true) {
+            $model = new PjLitigante();
+            $model_sign = new SignupForm();
 
-        if ($model_sign->load(Yii::$app->request->post())) {
-            $model->username = $model_sign->username ;
-            $model->id_abogado = PjAbogado::find()->where(['username' => Yii::$app->user->identity->username])->one()->id;
+            if ($model_sign->load(Yii::$app->request->post())) {
+                $model->username = $model_sign->username;
+                $model->id_abogado = PjAbogado::find()->where(['username' => Yii::$app->user->identity->username])->one()->id;
 
-            if ($this->notIsAbogado($model->username)) {
-                if ($model_sign->signup()) {
-                    $model->set_expediente = 0;
-                    if($model->save()){
-                        Yii::$app->session->setFlash('success','SE HA CREADO CORRECTAMENTE EL LITIGANTE');
-                        return $this->redirect(['view', 'id' => $model->id, 'username' => $model->username]);
-                    }else{
+                if ($this->notIsAbogado($model->username)) {
+                    if ($model_sign->signup()) {
+                        $model->set_expediente = 0;
+                        if ($model->save()) {
+                            Yii::$app->session->setFlash('success', 'Se ha creado correctamente el litigante');
+                            return $this->redirect(['view', 'id' => $model->id, 'username' => $model->username]);
+                        } else {
+                            return $this->render('create', [
+                                'model' => $model,
+                                'model_sign' => $model_sign
+                            ]);
+                        }
+
+                    } else {
                         return $this->render('create', [
                             'model' => $model,
                             'model_sign' => $model_sign
                         ]);
                     }
-
                 } else {
                     return $this->render('create', [
                         'model' => $model,
                         'model_sign' => $model_sign
                     ]);
                 }
+
             } else {
+
                 return $this->render('create', [
                     'model' => $model,
                     'model_sign' => $model_sign
                 ]);
             }
-
         } else {
-
-            return $this->render('create', [
-                'model' => $model,
-                'model_sign' => $model_sign
-            ]);
+            throw new ForbiddenHttpException;
         }
+
     }
 
     public function notIsAbogado($username)
@@ -139,13 +153,12 @@ class PjLitiganteController extends Controller
     public function actionUpdate($id, $username)
     {
         $model = $this->findModel($id, $username);
-        $model_sign = SignupForm::findModel($username);
+        $model_sign = User::findOne(['username' => $username]);
 
-        if ($model->load(Yii::$app->request->post()) && $model->load(Yii::$app->request->post())) {
-            $model_sign->username = $model->username;
+        if ($model_sign->load(Yii::$app->request->post())) {
+            $model->username = $model_sign->username;
             if ($this->notIsAbogado($model->username)) {
-                if ($model->save()) {
-                    $model_sign->signup_update($model_sign);
+                if ($model->save() && $model_sign->save()) {
                     return $this->redirect(['view', 'id' => $model->id, 'username' => $model->username]);
                 } else {
                     return $this->render('update', [

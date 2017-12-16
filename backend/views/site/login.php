@@ -7,77 +7,80 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Login';
+$this->title = 'Acceder';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login">
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-7 col-lg-8 hidden-xs hidden-sm">
-            <h1 class="txt-color-red login-header-big">SmartAdmin</h1>
-            <div class="hero">
 
-                <div class="pull-left login-desc-box-l">
-                    <h4 class="paragraph-header">It's Okay to be Smart. Experience the simplicity of SmartAdmin, everywhere you go!</h4>
-                    <div class="login-app-icons">
-                        <a href="javascript:void(0);" class="btn btn-danger btn-sm">Frontend Template</a>
-                        <a href="javascript:void(0);" class="btn btn-danger btn-sm">Find out more</a>
-                    </div>
-                </div>
+            <div class="row">
 
-                <img src="img/demo/iphoneview.png" class="pull-right display-image" alt="" style="width:210px">
+                <img src="img/demo/tribunojus_login2.png" class="display-image" alt="" style="width:600px">
 
             </div>
 
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                    <h5 class="about-heading">About SmartAdmin - Are you up to date?</h5>
+                    <h5 class="about-heading">Acerca de TribunoJus - ¿ Estas al día ?</h5>
+
                     <p>
-                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa.
+                        TribunoJus es una Web hecha para los clientes del mismo bufete, donde te bridamos la información más actualizada
+                        acerca de tu proceso Judicial.
                     </p>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                    <h5 class="about-heading">Not just your average template!</h5>
+                    <h5 class="about-heading">¡ Como me hago cliente del bufete TribunoJus !</h5>
+
                     <p>
-                        Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi voluptatem accusantium!
+                        Puedes encontrarnos en la siguiente dirección: Manuel Villaran, No. 110  - Urb. San Agustín - II
+                        Teléfono: 956-523-181 / 406-6317
                     </p>
                 </div>
             </div>
 
         </div>
         <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
-            <div class="well padding">
+            <div class="well no-padding">
                 <?php $form = ActiveForm::begin(
                     [
                         'id' => 'login-form',
                         'options' =>
                             [
-                                'class' => 'client-form',
+                                'class' => 'client-form smart-form',
                             ]
-                    ]); ?>
+                    ]) ?>
                 <header>
-                   <h2>Iniciar Seccion</h2>
+                    Iniciar Sección
                 </header>
                 <fieldset>
                     <section>
-                        <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+                        <label class="input">
+                            <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+                        </label>
                     </section>
                     <section>
-                        <?= $form->field($model, 'password')->passwordInput() ?>
+                        <label class="input">
+                            <?= $form->field($model, 'password')->passwordInput() ?>
+                        </label>
+                        <div class="note">
+                            <a href="#">¿ Olvidaste tu contraseña ?</a>
+                        </div>
                     </section>
                     <section>
-                        <?= $form->field($model, 'rememberMe')->checkbox() ?>
+                        <label class="checkbox">
+                            <input type="checkbox" checked="checked" value="1" name="LoginForm[rememberMe]" title="Recordarme">
+                            <i></i>
+                            Recordarme
+                        </label>
                     </section>
                 </fieldset>
                 <footer>
-                    <div class="form-group">
-                        <?= Html::submitButton('Acceder', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
-                    </div>
+                    <?= Html::submitButton('Acceder', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
                 </footer>
-                <?php ActiveForm::end(); ?>
             </div>
-            <h5 class="text-center"><div class="note">
-                    <?= Html::a('- Olvidaste tu contraseña? -', ['site/request-password-reset']) ?>
-                </div>
+            <?php ActiveForm::end() ?>
+
         </div>
     </div>
 </div>

@@ -3,6 +3,7 @@
 namespace backend\modules\litigante\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "pj_escrito".
@@ -10,6 +11,7 @@ use Yii;
  * @property integer $id
  * @property string $fecha
  * @property string $escrito
+ * @property string $observacion
  * @property boolean $notificacion
  * @property integer $id_expediente
  * @property integer $id_sub_expediente
@@ -23,6 +25,10 @@ class PjEscrito extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+
+    public $file;
+
+
     public static function tableName()
     {
         return 'pj_escrito';
@@ -34,11 +40,12 @@ class PjEscrito extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fecha'], 'required'],
+            [['fecha','file'], 'required'],
             [['fecha'], 'safe'],
+            [['file'], 'file'],
             [['notificacion'], 'boolean'],
             [['id_expediente', 'id_sub_expediente'], 'integer'],
-            [['escrito'], 'string', 'max' => 255],
+            [['escrito','observacion'], 'string', 'max' => 255],
             [['id_expediente'], 'exist', 'skipOnError' => true, 'targetClass' => PjExpediente::className(), 'targetAttribute' => ['id_expediente' => 'id']],
             [['id_sub_expediente'], 'exist', 'skipOnError' => true, 'targetClass' => PjSubExpediente::className(), 'targetAttribute' => ['id_sub_expediente' => 'id']],
         ];
@@ -51,11 +58,13 @@ class PjEscrito extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'fecha' => 'Fecha',
-            'escrito' => 'Escrito',
-            'notificacion' => 'Notificacion',
-            'id_expediente' => 'Id Expediente',
-            'id_sub_expediente' => 'Id Sub Expediente',
+            'fecha' => 'FECHA',
+            'escrito' => 'ESCRITO',
+            'notificacion' => 'NOTIFICACIÓN',
+            'id_expediente' => 'EXPEDIENTE',
+            'id_sub_expediente' => 'SUB EXPEDIENTE',
+            'file'=> 'ARCHIVO',
+            'observacion'=> 'OBSERVACIÓN'
         ];
     }
 

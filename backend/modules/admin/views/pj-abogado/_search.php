@@ -15,13 +15,13 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'username') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+    <div class="input-group">
+        <section class="col col-2 pull-left">
+            <?= $form->field($model, 'globalSearch')->textInput([
+                'class' => 'form-control input-sm',
+                'placeholder' => 'Buscar',
+            ]) ?>
+        </section>
     </div>
 
     <?php ActiveForm::end(); ?>

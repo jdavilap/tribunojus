@@ -15,10 +15,13 @@ class AuthItemSearch extends AuthItem
     /**
      * @inheritdoc
      */
+
+    public $globalSearch;
+
     public function rules()
     {
         return [
-            [['name', 'description', 'rule_name', 'data'], 'safe'],
+            [['name', 'description', 'rule_name', 'data', 'globalSearch'], 'safe'],
             [['type', 'created_at', 'updated_at'], 'integer'],
         ];
     }
@@ -30,6 +33,13 @@ class AuthItemSearch extends AuthItem
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'globalSearch' => ''
+        ];
     }
 
     /**
@@ -47,8 +57,8 @@ class AuthItemSearch extends AuthItem
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination'=> [
-                'pageSize'=> 5
+            'pagination' => [
+                'pageSize' => 10
             ]
         ]);
 
@@ -60,17 +70,11 @@ class AuthItemSearch extends AuthItem
             return $dataProvider;
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'type' => $this->type,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ]);
-
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'rule_name', $this->rule_name])
-            ->andFilterWhere(['like', 'data', $this->data]);
+        $query->orFilterWhere(['like', 'name', $this->globalSearch])
+            ->orFilterWhere(['like', 'description', $this->globalSearch])
+            ->orFilterWhere(['like', 'type', $this->globalSearch])
+            ->orFilterWhere(['like', 'rule_name', $this->globalSearch])
+            ->orFilterWhere(['like', 'data', $this->globalSearch]);
 
         return $dataProvider;
     }

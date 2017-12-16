@@ -12,13 +12,22 @@ use backend\modules\admin\models\AuthItemChild;
  */
 class AuthItemChildSearch extends AuthItemChild
 {
+
+    public $globalSearch;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['parent', 'child'], 'safe'],
+            [['parent', 'child','globalSearch'], 'safe'],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'globalSearch' => ''
         ];
     }
 
@@ -47,7 +56,7 @@ class AuthItemChildSearch extends AuthItemChild
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination'=> [
-                'pageSize'=> 5
+                'pageSize'=> 10
             ]
         ]);
 
@@ -60,8 +69,8 @@ class AuthItemChildSearch extends AuthItemChild
         }
 
         // grid filtering conditions
-        $query->andFilterWhere(['like', 'parent', $this->parent])
-            ->andFilterWhere(['like', 'child', $this->child]);
+        $query->orFilterWhere(['like', 'parent', $this->globalSearch])
+            ->orFilterWhere(['like', 'child', $this->globalSearch]);
 
         return $dataProvider;
     }

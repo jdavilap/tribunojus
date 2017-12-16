@@ -12,6 +12,7 @@ use backend\modules\admin\models\PjAbogado;
  */
 class PjAbogadoSearch extends PjAbogado
 {
+    public $globalSearch;
     /**
      * @inheritdoc
      */
@@ -19,7 +20,7 @@ class PjAbogadoSearch extends PjAbogado
     {
         return [
             [['id'], 'integer'],
-            [['username'], 'safe'],
+            [['username','globalSearch'], 'safe'],
         ];
     }
 
@@ -30,6 +31,13 @@ class PjAbogadoSearch extends PjAbogado
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'globalSearch'=> ''
+        ];
     }
 
     /**
@@ -57,12 +65,7 @@ class PjAbogadoSearch extends PjAbogado
             return $dataProvider;
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-        ]);
-
-        $query->andFilterWhere(['like', 'username', $this->username]);
+        $query->orFilterWhere(['like', 'username', $this->globalSearch]);
 
         return $dataProvider;
     }

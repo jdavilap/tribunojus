@@ -44,7 +44,7 @@ class PjSubExpediente extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'id_expediente' => 'Id Expediente',
+            'id_expediente' => 'Expediente',
             'sub_expediente' => 'Sub Expediente',
         ];
     }

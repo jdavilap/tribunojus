@@ -6,6 +6,7 @@ use Yii;
 use backend\modules\admin\models\AuthItemChild;
 use backend\modules\admin\models\AuthItemChildSearch;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -35,13 +36,17 @@ class AuthItemChildController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new AuthItemChildSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (Yii::$app->user->can('ver-reglas-emparejadas')) {
+            $searchModel = new AuthItemChildSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else {
+            throw new ForbiddenHttpException;
+        }
     }
 
     /**
@@ -52,9 +57,13 @@ class AuthItemChildController extends Controller
      */
     public function actionView($parent, $child)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($parent, $child),
-        ]);
+        if (Yii::$app->user->can('ver-reglas-emparejadas')) {
+            return $this->render('view', [
+                'model' => $this->findModel($parent, $child),
+            ]);
+        } else {
+            throw new ForbiddenHttpException;
+        }
     }
 
     /**
@@ -64,14 +73,18 @@ class AuthItemChildController extends Controller
      */
     public function actionCreate()
     {
-        $model = new AuthItemChild();
+        if (Yii::$app->user->can('crear-regla-emparejada')) {
+            $model = new AuthItemChild();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'parent' => $model->parent, 'child' => $model->child]);
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'parent' => $model->parent, 'child' => $model->child]);
+            } else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            throw new ForbiddenHttpException;
         }
     }
 
@@ -84,14 +97,18 @@ class AuthItemChildController extends Controller
      */
     public function actionUpdate($parent, $child)
     {
-        $model = $this->findModel($parent, $child);
+        if (Yii::$app->user->can('update-regla-emparejada')) {
+            $model = $this->findModel($parent, $child);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'parent' => $model->parent, 'child' => $model->child]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'parent' => $model->parent, 'child' => $model->child]);
+            } else {
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
+        }else{
+            throw new ForbiddenHttpException;
         }
     }
 

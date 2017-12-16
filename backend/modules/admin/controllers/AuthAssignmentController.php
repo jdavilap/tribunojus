@@ -6,6 +6,7 @@ use Yii;
 use backend\modules\admin\models\AuthAssignment;
 use backend\modules\admin\models\AuthAssignmentSearch;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -35,13 +36,19 @@ class AuthAssignmentController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new AuthAssignmentSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (Yii::$app->user->can('ver-asignaciones')) {
+            $searchModel = new AuthAssignmentSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else {
+            throw new ForbiddenHttpException;
+        }
+
+
     }
 
     /**
@@ -52,9 +59,14 @@ class AuthAssignmentController extends Controller
      */
     public function actionView($item_name, $user_id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($item_name, $user_id),
-        ]);
+        if (Yii::$app->user->can('ver-asignaciones')) {
+            return $this->render('view', [
+                'model' => $this->findModel($item_name, $user_id),
+            ]);
+        } else {
+            throw new ForbiddenHttpException;
+        }
+
     }
 
     /**
@@ -64,14 +76,18 @@ class AuthAssignmentController extends Controller
      */
     public function actionCreate()
     {
-        $model = new AuthAssignment();
+        if (Yii::$app->user->can('crear-asignacion')) {
+            $model = new AuthAssignment();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'item_name' => $model->item_name, 'user_id' => $model->user_id]);
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'item_name' => $model->item_name, 'user_id' => $model->user_id]);
+            } else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            throw new ForbiddenHttpException;
         }
     }
 
@@ -84,14 +100,18 @@ class AuthAssignmentController extends Controller
      */
     public function actionUpdate($item_name, $user_id)
     {
-        $model = $this->findModel($item_name, $user_id);
+        if (Yii::$app->user->can('update-asignacion')) {
+            $model = $this->findModel($item_name, $user_id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'item_name' => $model->item_name, 'user_id' => $model->user_id]);
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'item_name' => $model->item_name, 'user_id' => $model->user_id]);
+            } else {
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            throw new ForbiddenHttpException;
         }
     }
 

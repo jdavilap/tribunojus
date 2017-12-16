@@ -15,21 +15,14 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'anexo') ?>
-
-    <?= $form->field($model, 'fecha') ?>
-
-    <?= $form->field($model, 'notificacion')->checkbox() ?>
-
-    <?= $form->field($model, 'id_escrito') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+    <div class="input-group">
+        <section class="col col-2 pull-left">
+            <?= $form->field($model, 'globalSearch')->textInput([
+                'placeholder' => 'Buscar',
+            ]) ?>
+        </section>
     </div>
 
-    <?php ActiveForm::end(); ?>
+    <?php ActiveForm::end() ?>
 
 </div>

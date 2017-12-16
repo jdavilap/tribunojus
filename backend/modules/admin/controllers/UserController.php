@@ -7,6 +7,7 @@ use backend\modules\admin\models\User;
 use frontend\models\SignupForm;
 use backend\modules\admin\models\UserSearch;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -36,13 +37,19 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new UserSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (Yii::$app->user->can('ver-usuarios')) {
+            $searchModel = new UserSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else {
+            $message = '! Prohibido ¡ - Usted no tiene permiso para realizar esta acción';
+            throw new ForbiddenHttpException;
+        }
+
     }
 
     /**
@@ -52,9 +59,15 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        if (Yii::$app->user->can('ver-usuarios')) {
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+            ]);
+        } else {
+            $message = '! Prohibido ¡ - Usted no tiene permiso para realizar esta acción';
+            throw new ForbiddenHttpException($message);
+        }
+
     }
 
     /**
@@ -64,17 +77,22 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
-        $model = new SignupForm();
+        if (Yii::$app->user->can('crear-usuario')) {
+            $model = new SignupForm();
 
-        if ($model->load(Yii::$app->request->post())) {
+            if ($model->load(Yii::$app->request->post())) {
 
-            if($user = $model->signup()){
-                return $this->redirect(['view', 'id' => $user->id]);
+                if ($user = $model->signup()) {
+                    return $this->redirect(['view', 'id' => $user->id]);
+                }
             }
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        } else {
+            $message = '! Prohibido ¡ - Usted no tiene permiso para realizar esta acción';
+            throw new ForbiddenHttpException;
         }
-        return $this->render('create', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -85,14 +103,28 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = SignupForm::getModelByID($id);
+        if(Yii::$app->user->can('update-usuario')) {
+            $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            if ($model->load(Yii::$app->request->post())) {
+
+                if ($model->save()) {
+
+                    return $this->redirect(['view', 'id' => $model->id, 'username' => $model->username]);
+                } else {
+                    return $this->render('update', [
+                        'model' => $model,
+                    ]);
+                }
+
+            } else {
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
+        }else{
+            $message = '! Prohibido ¡ - Usted no tiene permiso para realizar esta acción';
+            throw new ForbiddenHttpException;
         }
     }
 

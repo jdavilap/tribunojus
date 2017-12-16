@@ -7,6 +7,7 @@ use Yii;
 use backend\modules\litigante\models\PjExpediente;
 use backend\modules\litigante\models\PjExpedienteSearch;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -36,13 +37,17 @@ class PjExpedienteController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new PjExpedienteSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (Yii::$app->user->can('ver-expediente')) {
+            $searchModel = new PjExpedienteSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else {
+            throw new ForbiddenHttpException;
+        }
     }
 
     /**
@@ -53,9 +58,13 @@ class PjExpedienteController extends Controller
      */
     public function actionView($id, $n_expendiente)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id, $n_expendiente),
-        ]);
+        if (Yii::$app->user->can('ver-expediente')) {
+            return $this->render('view', [
+                'model' => $this->findModel($id, $n_expendiente),
+            ]);
+        } else {
+            throw new ForbiddenHttpException;
+        }
     }
 
     /**
@@ -66,21 +75,22 @@ class PjExpedienteController extends Controller
     public function actionCreate($id_cliente)
     {
         $model = new PjExpediente();
-        $model_litigante = PjLitigante::findOne(['id'=>$id_cliente]);
+        $model_litigante = PjLitigante::findOne(['id' => $id_cliente]);
 
         if ($model->load(Yii::$app->request->post())) {
 
-            $model->fecha_inicio = date_parse($model->fecha_inicio);
-            $model->fecha_inicio = mktime(null, null, null, $model->fecha_inicio['month'], $model->fecha_inicio['day'], $model->fecha_inicio['year'], null);
-
+            if (isset($model->fecha_inicio)) {
+                $model->fecha_inicio = date_parse($model->fecha_inicio);
+                $model->fecha_inicio = mktime(null, null, null, $model->fecha_inicio['month'], $model->fecha_inicio['day'], $model->fecha_inicio['year'], null);
+            }
             $model->id_cliente = $id_cliente;
-            $model_litigante->set_expediente= 1;
-            $model_litigante->save();
 
             if ($model->save()) {
+
+                $model_litigante->set_expediente = 1;
+                $model_litigante->save();
                 return $this->redirect(['view', 'id' => $model->id, 'n_expendiente' => $model->n_expendiente]);
-            }
-            else {
+            } else {
 
                 return $this->render('create', [
                     'model' => $model,
@@ -128,7 +138,7 @@ class PjExpedienteController extends Controller
     {
         $model = $this->findModel($id, $n_expendiente);
 
-        $modelLitigante = PjLitigante::findOne(['id'=> $model->id_cliente]);
+        $modelLitigante = PjLitigante::findOne(['id' => $model->id_cliente]);
         $modelLitigante->set_expediente = 0;
         $modelLitigante->save();
         $model->delete();

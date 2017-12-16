@@ -25,13 +25,14 @@ $model = new LoginForm();
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <link rel="icon" href="img/favicon/tribunojus.ico" type="image/x-icon">
 </head>
-<body class="">
+<body class="animated fadeInDown">
 <?php $this->beginBody() ?>
 <header id="header">
-    <div id="logo-group">
-        <span id="logo"> <img src="img/logo.png" alt="SmartAdmin"> </span>
-    </div>
+<!--    <div id="logo-group">-->
+<!--        <span id="logo"> <img src="img/logo-tribunojus.png" alt="SmartAdmin"> </span>-->
+<!--    </div>-->
 </header>
 <div id="main" role="main">
     <!-- MAIN CONTENT -->

@@ -9,7 +9,8 @@ use Yii;
  *
  * @property integer $id
  * @property string $anexo
- * @property string $fecha
+ * @property integer $fecha
+ * @property string $observacion
  * @property boolean $notificacion
  * @property integer $id_escrito
  *
@@ -20,10 +21,13 @@ class PjAnexo extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public $file;
+
     public static function tableName()
     {
         return 'pj_anexo';
     }
+
 
     /**
      * @inheritdoc
@@ -31,10 +35,10 @@ class PjAnexo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['anexo', 'fecha', 'id_escrito'], 'required'],
-            [['fecha'], 'safe'],
+            [['anexo', 'fecha', 'id_escrito','file'], 'required'],
+            [['file'], 'file'],
             [['notificacion'], 'boolean'],
-            [['id_escrito'], 'integer'],
+            [['id_escrito','fecha'], 'integer'],
             [['anexo'], 'string', 'max' => 255],
             [['id_escrito'], 'exist', 'skipOnError' => true, 'targetClass' => PjEscrito::className(), 'targetAttribute' => ['id_escrito' => 'id']],
         ];
@@ -47,10 +51,12 @@ class PjAnexo extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'anexo' => 'Anexo',
-            'fecha' => 'Fecha',
-            'notificacion' => 'Notificacion',
-            'id_escrito' => 'Id Escrito',
+            'anexo' => 'ANEXO',
+            'fecha' => 'FEHCA',
+            'notificacion' => 'NOTIFICACIÓN',
+            'id_escrito' => 'ESCRITO',
+            'file'=> 'ANEXO',
+            'observacion'=> 'OBSERVACIÓN'
         ];
     }
 

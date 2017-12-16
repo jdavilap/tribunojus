@@ -12,6 +12,8 @@ use backend\modules\litigante\models\PjAnexo;
  */
 class PjAnexoSearch extends PjAnexo
 {
+
+    public $globalSearch;
     /**
      * @inheritdoc
      */
@@ -19,8 +21,15 @@ class PjAnexoSearch extends PjAnexo
     {
         return [
             [['id', 'id_escrito'], 'integer'],
-            [['anexo', 'fecha'], 'safe'],
+            [['anexo', 'fecha','globalSearch'], 'safe'],
             [['notificacion'], 'boolean'],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'globalSearch' => ''
         ];
     }
 
@@ -58,15 +67,7 @@ class PjAnexoSearch extends PjAnexo
             return $dataProvider;
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'fecha' => $this->fecha,
-            'notificacion' => $this->notificacion,
-            'id_escrito' => $this->id_escrito,
-        ]);
-
-        $query->andFilterWhere(['like', 'anexo', $this->anexo]);
+        $query->orFilterWhere(['like', 'anexo', $this->globalSearch]);
 
         return $dataProvider;
     }

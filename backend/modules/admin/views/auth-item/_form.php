@@ -10,18 +10,46 @@ use yii\widgets\ActiveForm;
 
 <div class="auth-item-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => [
+            'class' => 'smart-form',
+            'id' => 'item-form',
+            'novalidate' => 'novalidate'
+        ]
+    ]); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <fieldset>
+        <div class="row">
+            <section class="col col-10">
+                <label class="input">
+                    <?= $form->field($model,'name')->input('text') ?>
+                </label>
+            </section>
+        </div>
+        <div class="row">
+            <section class="col col-10">
+                <label class="input">
+                    <?= $form->field($model,'type')->input('text') ?>
+                </label>
+            </section>
+        </div>
+        <div class="row">
 
-    <?= $form->field($model, 'type')->textInput() ?>
+            <section class="col col-10">
+                <label class="textarea">
+                    <?= $form->field($model,'description')->textarea() ?>
+                </label>
+            </section>
+        </div>
+    </fieldset>
 
-    <?= $form->field($model, 'description')->textarea(['rows' => 5]) ?>
+    <footer>
+        <?= Html::submitButton($model->isNewRecord ? '<i class="fa fa-check"></i> Guardar' : '<i class="fa fa-edit"></i> Actualizar', ['class' => $model->isNewRecord ? 'btn btn-primary' : 'btn btn-primary']) ?>
+        <button type="button" class="btn btn-default" onclick="window.history.back();">
+            <i class="fa fa-times"></i> Cancelar
+        </button>
+    </footer>
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? '<i class="fa fa-check-circle"></i> Aceptar' : '<i class="fa fa-edit"></i> Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
+    <?php ActiveForm::end()?>
 
 </div>

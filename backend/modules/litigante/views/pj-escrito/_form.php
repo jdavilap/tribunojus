@@ -10,22 +10,36 @@ use yii\widgets\ActiveForm;
 
 <div class="pj-escrito-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => [
+            'class' => 'smart-form',
+            'id' => 'expediente-form',
+            'novalidate' => 'novalidate',
+            'enableClientValidation' => false
+        ]
+    ]); ?>
+    <fieldset>
+        <div class="row">
+            <section class="col col-10">
+                <label class="fileInput">
+                    <?= $form->field($model, 'file')->fileInput() ?>
 
-    <?= $form->field($model, 'fecha')->textInput() ?>
+                </label>
+            </section>
+            <section class="col col-10">
+                <label class="textarea">
+                    <?= $form->field($model, 'observacion')->textarea() ?>
+                </label>
+            </section>
+        </div>
 
-    <?= $form->field($model, 'escrito')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'notificacion')->checkbox() ?>
-
-    <?= $form->field($model, 'id_expediente')->textInput() ?>
-
-    <?= $form->field($model, 'id_sub_expediente')->textInput() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
+    </fieldset>
+    <footer>
+        <?= Html::submitButton($model->isNewRecord ? '<i class="fa fa-check"></i> Guardar' : '<i class="fa fa-edit"></i> Actualizar', ['class' => $model->isNewRecord ? 'btn btn-primary' : 'btn btn-primary']) ?>
+        <button type="button" class="btn btn-default" onclick="window.history.back();">
+           <i class="fa fa-times"></i> Cancelar
+        </button>
+    </footer>
+    <?php ActiveForm::end() ?>
 
 </div>

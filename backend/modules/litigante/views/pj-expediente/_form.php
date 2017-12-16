@@ -1,7 +1,11 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
+use backend\modules\litigante\models\PjExpediente;
+use backend\modules\litigante\models\Distrito;
+
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\litigante\models\PjExpediente */
@@ -10,48 +14,101 @@ use yii\widgets\ActiveForm;
 
 <div class="pj-expediente-form">
 
-    <?php $form = ActiveForm::begin([]); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => [
+            'class' => 'smart-form',
+            'id' => 'expediente-form',
+            'novalidate' => 'novalidate',
+            'enableClientValidation'=> false
+        ]
+    ]); ?>
 
-    <div class="col col-lg-6">
-        <?= $form->field($model, 'n_expendiente')->textInput(['maxlength' => true,]) ?>
-
-        <?= $form->field($model, 'juez')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'fecha_inicio')->textInput([
-            'class' => 'form-control datepicker',
-            'onclick'=>'false'
-        ]) ?>
-
-        <?= $form->field($model, 'observacion')->textarea(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'materia')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'etapa_procesal')->textInput(['maxlength' => true]) ?>
-
-    </div>
-    <div class="col col-lg-6">
-
-        <?= $form->field($model, 'ubicacion')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'sumilla')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'distrito_judicial')->dropDownList(['LIMA NORTE','LIMA CENTRO'],[
-            'class'=>'select2',
-            'style'=> 'whith: 100%',
-            'prompt'=> '...'
-        ]) ?>
-
-        <?= $form->field($model, 'proceso')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'especialidad')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'estado')->textInput(['maxlength' => true]) ?>
-
-        <div class="form-group">
-            <?= Html::submitButton('<i class="fa fa-check-circle"></i> Aceptar ', ['class' => 'btn btn-success', 'name' => 'signup-button']) ?>
+    <fieldset>
+        <div class="row">
+            <section class="col col-6">
+                <label class="input">
+                    <?= $form->field($model,'n_expendiente')->textInput()?>
+                </label>
+            </section>
+            <section class="col col-6">
+                <label class="input">
+                    <?= $form->field($model,'juez')->textInput()?>
+                </label>
+            </section>
         </div>
+        <div class="row">
+            <section class="col col-6">
+                <label class="input">
+                    <?= $form->field($model,'fecha_inicio')->textInput([
+                        'class'=>'datepicker'
+                    ])?>
+                </label>
+            </section>
+            <section class="col col-6">
+                <label class="input">
+                    <?= $form->field($model,'materia')->textInput()?>
+                    </label>
+            </section>
+        </div>
+        <div class="row">
+            <section class="col col-6">
+                <label class="input">
+                    <?= $form->field($model,'etapa_procesal')->textInput()?>
+                </label>
+            </section>
+            <section class="col col-6">
+                <label class="input">
+                    <?= $form->field($model,'ubicacion')->textInput()?>
+                </label>
+            </section>
+        </div>
+        <div class="row">
+            <section class="col col-6">
+                <label class="input">
+                    <?= $form->field($model,'sumilla')->textInput()?>
+                </label>
+            </section>
+            <section class="col col-6">
+                <label class="input">
+                    <?= $form->field($model,'proceso')->textInput()?>
+                </label>
+            </section>
+        </div>
+        <div class="row">
+            <section class="col col-6">
+                <label class="input">
+                    <?= $form->field($model,'especialidad')->textInput()?>
+            </section>
+            <section class="col col-6">
+                <label class="input">
+                    <?= $form->field($model,'estado')->textInput()?>
+                </label>
+            </section>
+        </div>
+        <div class="row">
+            <section class="col col-6">
+                <label class="textarea">
+                    <?= $form->field($model,'observacion')->textarea()?>
+                    </label>
+            </section>
+            <section class="col col-6">
+                <?= $form->field($model, 'distrito_judicial')->dropDownList(ArrayHelper::map(Distrito::find()->all(), 'name', 'name'), [
+                        'class' => 'select2',
+                        'style' => 'whith: 100%',
+                        'prompt' => 'SELECCIONE UN DISTRITO JUDICIAL...',
+                    ]
 
-    </div>
+                ) ?>
+            </section>
+        </div>
+    </fieldset>
+
+    <footer>
+        <?= Html::submitButton($model->isNewRecord ? '<i class="fa fa-check"></i> Guardar' : '<i class="fa fa-edit"></i> Actualizar', ['class' => $model->isNewRecord ? 'btn btn-primary' : 'btn btn-primary']) ?>
+        <button type="button" class="btn btn-default" onclick="window.history.back();">
+            <i class="fa fa-times"></i> Cancelar
+        </button>
+    </footer>
 
     <?php ActiveForm::end(); ?>
 

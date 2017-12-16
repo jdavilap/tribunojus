@@ -12,13 +12,16 @@ use backend\modules\admin\models\AuthAssignment;
  */
 class AuthAssignmentSearch extends AuthAssignment
 {
+
+    public $globalSearch;
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['item_name', 'user_id'], 'safe'],
+            [['item_name', 'user_id','globalSearch'], 'safe'],
             [['created_at'], 'integer'],
         ];
     }
@@ -30,6 +33,13 @@ class AuthAssignmentSearch extends AuthAssignment
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'globalSearch'=> ''
+        ];
     }
 
     /**
@@ -47,8 +57,8 @@ class AuthAssignmentSearch extends AuthAssignment
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination'=> [
-                'pageSize'=> 5
+            'pagination' => [
+                'pageSize' => 10
             ]
         ]);
 
@@ -60,13 +70,8 @@ class AuthAssignmentSearch extends AuthAssignment
             return $dataProvider;
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'created_at' => $this->created_at,
-        ]);
-
-        $query->andFilterWhere(['like', 'item_name', $this->item_name])
-            ->andFilterWhere(['like', 'user_id', $this->user_id]);
+        $query->orFilterWhere(['like', 'item_name', $this->globalSearch])
+            ->orFilterWhere(['like', 'user_id', $this->globalSearch]);
 
         return $dataProvider;
     }

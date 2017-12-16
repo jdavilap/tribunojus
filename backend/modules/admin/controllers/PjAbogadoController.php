@@ -4,11 +4,13 @@ namespace backend\modules\admin\controllers;
 
 use backend\modules\admin\models\User;
 use backend\modules\litigante\models\PjLitigante;
+use Prophecy\Exception\Prediction\FailedPredictionException;
 use Yii;
 use backend\modules\admin\models\PjAbogado;
 use backend\modules\admin\models\PjAbogadoSearch;
 use frontend\models\SignupForm;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -38,13 +40,18 @@ class PjAbogadoController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new PjAbogadoSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (Yii::$app->user->can('ver-abogados')) {
+            $searchModel = new PjAbogadoSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else {
+            throw new ForbiddenHttpException;
+        }
+
     }
 
     /**
@@ -55,9 +62,14 @@ class PjAbogadoController extends Controller
      */
     public function actionView($id, $username)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id, $username),
-        ]);
+        if (Yii::$app->user->can('ver-abogados')) {
+            return $this->render('view', [
+                'model' => $this->findModel($id, $username),
+            ]);
+        } else {
+            throw new ForbiddenHttpException;
+        }
+
     }
 
     /**
@@ -67,33 +79,47 @@ class PjAbogadoController extends Controller
      */
     public function actionCreate()
     {
-        $model = new PjAbogado();
-        $model_sign = new SignupForm();
+        if (Yii::$app->user->can('crear-abogado')) {
+            $model = new PjAbogado();
+            $model_sign = new SignupForm();
 
-        if ($model_sign->load(Yii::$app->request->post()) && $model->load(Yii::$app->request->post())) {
-            $model_sign->username = $model->username;
-            $model->id = $model_sign->id;
-            if ($this->notIsLitigante($model->username)) {
-                if ($model->save()) {
-                    $model_sign->signup();
-                    return $this->redirect(['view', 'id' => $model->id, 'username' => $model->username]);
+            if ($model_sign->load(Yii::$app->request->post())) {
+                $model->username = $model_sign->username;
+
+                if ($this->notIsLitigante($model->username)) {
+                    if ($model_sign->signup()) {
+                        if ($model->save()) {
+                            Yii::$app->session->setFlash('success', 'SE HA CREADO CORRECTAMENTE EL ABOGADO');
+                            return $this->redirect(['view', 'id' => $model->id, 'username' => $model->username]);
+                        } else {
+                            return $this->render('create', [
+                                'model' => $model,
+                                'model_sign' => $model_sign
+                            ]);
+                        }
+
+                    } else {
+                        return $this->render('create', [
+                            'model' => $model,
+                            'model_sign' => $model_sign
+                        ]);
+                    }
                 } else {
                     return $this->render('create', [
                         'model' => $model,
                         'model_sign' => $model_sign
                     ]);
                 }
+
             } else {
+
                 return $this->render('create', [
                     'model' => $model,
                     'model_sign' => $model_sign
                 ]);
             }
         } else {
-            return $this->render('create', [
-                'model' => $model,
-                'model_sign' => $model_sign
-            ]);
+            throw new ForbiddenHttpException;
         }
     }
 
@@ -118,15 +144,22 @@ class PjAbogadoController extends Controller
      */
     public function actionUpdate($id, $username)
     {
-        $model = $this->findModel($id, $username);
-        $model_sign = SignupForm::findModel($username);
+        if (Yii::$app->user->can('update-abogado')) {
+            $model = $this->findModel($id, $username);
+            $model_sign = User::findOne(['username' => $username]);
 
-        if ($model->load(Yii::$app->request->post()) && $model->load(Yii::$app->request->post())) {
-            $model_sign->username = $model->username;
-            if ($this->notIsLitigante($model->username)) {
-                if ($model->save()) {
-                    $model_sign->signup_update($model_sign);
-                    return $this->redirect(['view', 'id' => $model->id, 'username' => $model->username]);
+            if ($model->load(Yii::$app->request->post()) && $model->load(Yii::$app->request->post())) {
+                $model_sign->username = $model->username;
+                if ($this->notIsLitigante($model->username)) {
+                    if ($model->save()) {
+                        $model_sign->save();
+                        return $this->redirect(['view', 'id' => $model->id, 'username' => $model->username]);
+                    } else {
+                        return $this->render('update', [
+                            'model' => $model,
+                            'model_sign' => $model_sign
+                        ]);
+                    }
                 } else {
                     return $this->render('update', [
                         'model' => $model,
@@ -140,10 +173,7 @@ class PjAbogadoController extends Controller
                 ]);
             }
         } else {
-            return $this->render('update', [
-                'model' => $model,
-                'model_sign' => $model_sign
-            ]);
+            throw new ForbiddenHttpException;
         }
     }
 

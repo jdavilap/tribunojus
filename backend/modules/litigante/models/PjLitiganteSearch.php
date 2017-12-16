@@ -13,6 +13,8 @@ use backend\modules\litigante\models\PjLitigante;
  */
 class PjLitiganteSearch extends PjLitigante
 {
+
+    public $globalSearch;
     /**
      * @inheritdoc
      */
@@ -20,7 +22,14 @@ class PjLitiganteSearch extends PjLitigante
     {
         return [
             [['id', 'id_abogado'], 'integer'],
-            [['username'], 'safe'],
+            [['username','globalSearch'], 'safe'],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'globalSearch' => ''
         ];
     }
 
@@ -68,13 +77,7 @@ class PjLitiganteSearch extends PjLitigante
             return $dataProvider;
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'id_abogado' => $this->id_abogado,
-        ]);
-
-        $query->andFilterWhere(['like', 'username', $this->username]);
+        $query->orFilterWhere(['like', 'username', $this->globalSearch]);
 
         return $dataProvider;
     }

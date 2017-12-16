@@ -15,11 +15,13 @@ class PjExpedienteSearch extends PjExpediente
     /**
      * @inheritdoc
      */
+    public $globalSearch;
+
     public function rules()
     {
         return [
             [['id', 'id_cliente'], 'integer'],
-            [['n_expendiente', 'juez', 'fecha_inicio', 'observacion', 'materia', 'etapa_procesal', 'ubicacion', 'sumilla', 'distrito_judicial', 'proceso', 'especialidad', 'estado', 'fecha_conclusion', 'motivo_conclusion'], 'safe'],
+            [['n_expendiente','globalSearch', 'juez', 'fecha_inicio', 'observacion', 'materia', 'etapa_procesal', 'ubicacion', 'sumilla', 'distrito_judicial', 'proceso', 'especialidad', 'estado', 'fecha_conclusion', 'motivo_conclusion'], 'safe'],
         ];
     }
 
@@ -30,6 +32,13 @@ class PjExpedienteSearch extends PjExpediente
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'globalSearch' => ''
+        ];
     }
 
     /**
@@ -60,26 +69,19 @@ class PjExpedienteSearch extends PjExpediente
             return $dataProvider;
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'fecha_inicio' => $this->fecha_inicio,
-            'fecha_conclusion' => $this->fecha_conclusion,
-            'id_cliente' => $this->id_cliente,
-        ]);
 
-        $query->andFilterWhere(['like', 'n_expendiente', $this->n_expendiente])
-            ->andFilterWhere(['like', 'juez', $this->juez])
-            ->andFilterWhere(['like', 'observacion', $this->observacion])
-            ->andFilterWhere(['like', 'materia', $this->materia])
-            ->andFilterWhere(['like', 'etapa_procesal', $this->etapa_procesal])
-            ->andFilterWhere(['like', 'ubicacion', $this->ubicacion])
-            ->andFilterWhere(['like', 'sumilla', $this->sumilla])
-            ->andFilterWhere(['like', 'distrito_judicial', $this->distrito_judicial])
-            ->andFilterWhere(['like', 'proceso', $this->proceso])
-            ->andFilterWhere(['like', 'especialidad', $this->especialidad])
-            ->andFilterWhere(['like', 'estado', $this->estado])
-            ->andFilterWhere(['like', 'motivo_conclusion', $this->motivo_conclusion]);
+        $query->orFilterWhere(['like', 'n_expendiente', $this->globalSearch])
+            ->orFilterWhere(['like', 'juez', $this->globalSearch])
+            ->orFilterWhere(['like', 'observacion', $this->globalSearch])
+            ->orFilterWhere(['like', 'materia', $this->globalSearch])
+            ->orFilterWhere(['like', 'etapa_procesal', $this->globalSearch])
+            ->orFilterWhere(['like', 'ubicacion', $this->globalSearch])
+            ->orFilterWhere(['like', 'sumilla', $this->globalSearch])
+            ->orFilterWhere(['like', 'distrito_judicial', $this->globalSearch])
+            ->orFilterWhere(['like', 'proceso', $this->globalSearch])
+            ->orFilterWhere(['like', 'especialidad', $this->globalSearch])
+            ->orFilterWhere(['like', 'estado', $this->globalSearch])
+            ->orFilterWhere(['like', 'motivo_conclusion', $this->globalSearch]);
 
         return $dataProvider;
     }

@@ -44,6 +44,22 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        'mailer'=> [
+            'class'=> 'yii\swiftmailer\Mailer',
+            'useFileTransport'=> false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.gmail.com',
+                'username' => 'root.tribunojus@gmail.com',
+                'password' => 'triBUNOjus*r00t',
+                'port' => '587',
+                'encryption' => 'tls',
+            ],
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+            'defaultRoles' => ['guest'],
+        ]
 
         /*'urlManager' => [
             'enablePrettyUrl' => true,

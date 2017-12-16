@@ -12,19 +12,40 @@ use backend\modules\admin\models\AuthItem;
 
 <div class="auth-item-child-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => [
+            'class' => 'smart-form',
+            'id' => 'item-form',
+            'novalidate' => 'novalidate'
+        ]
+    ]); ?>
 
-    <?= $form->field($model, 'parent')->dropDownList(ArrayHelper::map(AuthItem::find()->all(),'name','name'),[
-        'prompt'=>'Seleccione la 1ra regla ...',
-        //'class'=>'input-sm'
-    ]) ?>
-    <?= $form->field($model, 'child')->dropDownList(ArrayHelper::map(AuthItem::find()->all(),'name','name'),[
-        'prompt'=>'Seleccione la 2da regla ...',
-    ]) ?>
+    <fieldset>
+        <div class="row">
+            <section class="col col-10">
+                <?= $form->field($model, 'parent')->dropDownList(ArrayHelper::map(AuthItem::find()->all(),'name','name'),[
+                    'prompt'=>'Seleccione la 1ra regla ...',
+                    'class'=>'select2',
+                    'style'=> 'whith: 100%',
+                ]) ?>
+            </section>
+            <section class="col col-10">
+                <?= $form->field($model, 'child')->dropDownList(ArrayHelper::map(AuthItem::find()->all(),'name','name'),[
+                    'prompt'=>'Seleccione la 2da regla ...',
+                    'class'=>'select2',
+                    'style'=> 'whith: 100%',
+                ]) ?>
+            </section>
+        </div>
+    </fieldset>
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? '<i class="fa fa-check-circle"></i> Aceptar' : '<i class="fa fa-edit"></i> Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
-    <?php ActiveForm::end(); ?>
+    <footer>
+        <?= Html::submitButton($model->isNewRecord ? '<i class="fa fa-check"></i> Guardar' : '<i class="fa fa-edit"></i> Actualizar', ['class' => $model->isNewRecord ? 'btn btn-primary' : 'btn btn-primary']) ?>
+        <button type="button" class="btn btn-default" onclick="window.history.back();">
+            <i class="fa fa-times"></i> Cancelar
+        </button>
+    </footer>
+
+    <?php ActiveForm::end() ?>
 
 </div>

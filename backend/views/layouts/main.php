@@ -23,6 +23,7 @@ AppAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <link rel="icon" href="img/favicon/tribunojus.ico" type="image/x-icon">
 </head>
 <body class="desktop-detected fixed-header smart-style-0">
 <?php $this->beginBody() ?>
@@ -34,7 +35,7 @@ AppAsset::register($this);
         <!-- END LOGO PLACEHOLDER -->
         <!-- Note: The activity badge color changes when clicked and resets the number to 0
 					 Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->
-        <span id="activity" class="activity-dropdown"> <i class="fa fa-user"></i> <b class="badge"> 21 </b> </span>
+        <span id="activity" class="activity-dropdown"> <i class="fa fa-bell"></i> <b class="badge"><?= Html::encode(\backend\modules\litigante\models\PjMensaje::getCountMensajeActivo(Yii::$app->user->identity->username))?></span></b> </span>
     </div>
     <!-- #PROJECTS: projects dropdown -->
     <div class="project-context hidden-xs">
@@ -73,7 +74,7 @@ AppAsset::register($this);
     <div class="pull-right">
         <!-- collapse menu button -->
         <div id="hide-menu" class="btn-header pull-right">
-            <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i
+            <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Contraer Menú"><i
                         class="fa fa-reorder"></i></a> </span>
         </div>
         <!-- end collapse menu -->
@@ -105,51 +106,66 @@ AppAsset::register($this);
                     <span class="menu-item-parent">INICIO</span></a>
             </li>
             <li class="">
-                <a href="#"><i class="fa fa-lg fa-fw fa-cogs"></i><span class="menu-item-parent">ADMIN WEB</span> </a>
-                <ul>
-                    <li class="">
-                        <a href="<?php Yii::$app->homeUrl ?>?r=admin/user">USUARIOS</a>
-                    </li>
-                    <li class="">
-                        <a href="<?php Yii::$app->homeUrl ?>?r=admin/pj-abogado">ABOGADOS</a>
-                    </li>
-                    <li class="">
-                        <a href="#"><i class="fa fa-lg fa-fw fa-lock"></i><span
-                                class="menu-item-parent">RBAC SEGURIDAD</span></a>
-                        <ul>
-                            <li class="">
-                                <a href="<?php Yii::$app->homeUrl ?>?r=admin/auth-item">REGLAS</a>
-                            </li>
-                            <li class="">
-                                <a href="<?php Yii::$app->homeUrl ?>?r=admin/auth-item-child">REGLAS EMPAREJADAS</a>
-                            </li>
-                            <li class="">
-                                <a href="<?php Yii::$app->homeUrl ?>?r=admin/auth-assignment">ASIGNACIONES</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+                <a href="<?php Yii::$app->homeUrl ?>?r=litigante/pj-mensaje" title="Mensajes"><i class="fa fa-lg fa-fw fa-envelope"></i>
+                    <span class="menu-item-parent">MENSAJES</span>
+                    <span class="badge pull-right inbox-badge"><?= Html::encode(\backend\modules\litigante\models\PjMensaje::getCountMensajeActivo(Yii::$app->user->identity->username))?></span></a>
             </li>
-            <li class="">
-                <a href="<?php Yii::$app->homeUrl ?>?r=litigante/pj-litigante"><i class="fa fa-lg fa-fw fa-user"></i><span
-                        class="menu-item-parent">LITIGANTE</span></a>
-            </li>
-            <li class="">
-                <a href="<?php Yii::$app->homeUrl ?>?r=litigante/pj-expediente"><i class="fa fa-lg fa-fw fa-folder"></i><span
-                        class="menu-item-parent">EXPEDIENTE</span></a>
-            </li>
-            <li class="">
-                <a href="<?php Yii::$app->homeUrl ?>?r=litigante/pj-sub-expediente"><i class="fa fa-lg fa-fw fa-folder-open"></i><span
-                        class="menu-item-parent">SUB EXPEDIENTE</span></a>
-            </li>
-            <li class="">
-                <a href="<?php Yii::$app->homeUrl ?>?r=litigante/pj-escrito"><i class="fa fa-lg fa-fw fa-edit"></i><span
-                        class="menu-item-parent">ESCRITO</span></a>
-            </li>
-            <li class="">
-                <a href="<?php Yii::$app->homeUrl ?>?r=litigante/pj-anexo"><i class="fa fa-lg fa-fw fa-paperclip"></i><span
-                        class="menu-item-parent">ANEXO</span></a>
-            </li>
+            <?php if (Yii::$app->user->can('ver-menu-web')): ?>
+                <li class="">
+                    <a href="#"><i class="fa fa-lg fa-fw fa-cogs"></i><span class="menu-item-parent">ADMIN WEB</span>
+                    </a>
+                    <ul>
+                        <li class="">
+                            <a href="<?php Yii::$app->homeUrl ?>?r=admin/user">USUARIOS</a>
+                        </li>
+                        <li class="">
+                            <a href="<?php Yii::$app->homeUrl ?>?r=admin/pj-abogado">ABOGADOS</a>
+                        </li>
+                        <li class="">
+                            <a href="#"><i class="fa fa-lg fa-fw fa-lock"></i><span
+                                    class="menu-item-parent">RBAC SEGURIDAD</span></a>
+                            <ul>
+                                <li class="">
+                                    <a href="<?php Yii::$app->homeUrl ?>?r=admin/auth-item">REGLAS</a>
+                                </li>
+                                <li class="">
+                                    <a href="<?php Yii::$app->homeUrl ?>?r=admin/auth-item-child">REGLAS EMPAREJADAS</a>
+                                </li>
+                                <li class="">
+                                    <a href="<?php Yii::$app->homeUrl ?>?r=admin/auth-assignment">ASIGNACIONES</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            <?php endif; ?>
+            <?php if (Yii::$app->user->can('ver-menu-litigante')): ?>
+                <li class="">
+                    <a href="<?php Yii::$app->homeUrl ?>?r=litigante/pj-litigante"><i
+                            class="fa fa-lg fa-fw fa-user"></i><span
+                            class="menu-item-parent">LITIGANTES</span></a>
+                </li>
+                <li class="">
+                    <a href="<?php Yii::$app->homeUrl ?>?r=litigante/pj-expediente"><i
+                            class="fa fa-lg fa-fw fa-folder"></i><span
+                            class="menu-item-parent">EXPEDIENTES</span></a>
+                </li>
+                <li class="">
+                    <a href="<?php Yii::$app->homeUrl ?>?r=litigante/pj-sub-expediente"><i
+                            class="fa fa-lg fa-fw fa-folder-open"></i><span
+                            class="menu-item-parent">SUB EXPEDIENTES</span></a>
+                </li>
+                <li class="">
+                    <a href="<?php Yii::$app->homeUrl ?>?r=litigante/pj-escrito"><i
+                            class="fa fa-lg fa-fw fa-edit"></i><span
+                            class="menu-item-parent">ESCRITOS</span></a>
+                </li>
+                <li class="">
+                    <a href="<?php Yii::$app->homeUrl ?>?r=litigante/pj-anexo"><i
+                            class="fa fa-lg fa-fw fa-paperclip"></i><span
+                            class="menu-item-parent">ANEXOS</span></a>
+                </li>
+            <?php endif; ?>
         </ul>
     </nav>
     <span class="minifyme" data-action="minifyMenu"> <i class="fa fa-arrow-circle-left hit"></i> </span>

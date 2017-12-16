@@ -49,10 +49,17 @@ class SiteController extends Controller
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
-            ],            
+            ],
         ];
+    }
 
-        
+    public function actionError()
+    {
+        var_dump('test');die();
+        $exception = Yii::$app->errorHandler->exception;
+        if ($exception !== null) {
+            return $this->render('error', ['exception' => $exception]);
+        }
     }
 
     /**
@@ -72,7 +79,7 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        $this->layout= 'mainLogin';
+        $this->layout = 'mainLogin';
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }

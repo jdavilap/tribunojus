@@ -12,6 +12,8 @@ use backend\modules\litigante\models\PjSubExpediente;
  */
 class PjSubExpedienteSearch extends PjSubExpediente
 {
+
+    public $globalSearch;
     /**
      * @inheritdoc
      */
@@ -19,7 +21,14 @@ class PjSubExpedienteSearch extends PjSubExpediente
     {
         return [
             [['id', 'id_expediente'], 'integer'],
-            [['sub_expediente'], 'safe'],
+            [['sub_expediente','globalSearch'], 'safe'],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'globalSearch' => ''
         ];
     }
 
@@ -57,13 +66,8 @@ class PjSubExpedienteSearch extends PjSubExpediente
             return $dataProvider;
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'id_expediente' => $this->id_expediente,
-        ]);
 
-        $query->andFilterWhere(['like', 'sub_expediente', $this->sub_expediente]);
+        $query->orFilterWhere(['like', 'sub_expediente', $this->globalSearch]);
 
         return $dataProvider;
     }

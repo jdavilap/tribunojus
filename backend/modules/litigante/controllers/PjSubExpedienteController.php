@@ -9,6 +9,7 @@ use backend\modules\litigante\models\PjExpediente;
 use backend\modules\litigante\models\PjSubExpedienteSearch;
 use yii\helpers\Json;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\JsonParser;
@@ -39,13 +40,17 @@ class PjSubExpedienteController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new PjSubExpedienteSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (Yii::$app->user->can('ver-sub-expediente')) {
+            $searchModel = new PjSubExpedienteSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else {
+            throw new ForbiddenHttpException;
+        }
     }
 
     /**
@@ -56,9 +61,13 @@ class PjSubExpedienteController extends Controller
      */
     public function actionView($id, $id_expediente)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id, $id_expediente),
-        ]);
+        if (Yii::$app->user->can('ver-sub-expediente')) {
+            return $this->render('view', [
+                'model' => $this->findModel($id, $id_expediente),
+            ]);
+        } else {
+            throw new ForbiddenHttpException;
+        }
     }
 
     /**
