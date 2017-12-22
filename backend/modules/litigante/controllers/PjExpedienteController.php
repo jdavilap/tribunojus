@@ -6,6 +6,7 @@ use backend\modules\litigante\models\PjLitigante;
 use Yii;
 use backend\modules\litigante\models\PjExpediente;
 use backend\modules\litigante\models\PjExpedienteSearch;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
@@ -161,5 +162,10 @@ class PjExpedienteController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionGetexpediente(){
+        $expediente = PjExpediente::findOne(['id_cliente'=> PjLitigante::findOne(['username'=>Yii::$app->user->identity->username])->id]);
+        echo Json::encode($expediente);
     }
 }

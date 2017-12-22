@@ -112,7 +112,7 @@ AppAsset::register($this);
             </li>
             <?php if (Yii::$app->user->can('ver-menu-web')): ?>
                 <li class="">
-                    <a href="#"><i class="fa fa-lg fa-fw fa-cogs"></i><span class="menu-item-parent">ADMIN WEB</span>
+                    <a href="#" title="admin web"><i class="fa fa-lg fa-fw fa-cogs"></i><span class="menu-item-parent">ADMIN WEB</span>
                     </a>
                     <ul>
                         <li class="">

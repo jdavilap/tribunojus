@@ -11,9 +11,9 @@ use yii\widgets\ActiveForm;
 <div class="user-form">
 
     <?php $form = ActiveForm::begin([
+        'id' => 'user-form',
         'options' => [
             'class' => 'smart-form',
-            'id' => 'user-form',
             'novalidate' => 'novalidate'
         ]
     ]); ?>

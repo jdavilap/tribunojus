@@ -12,10 +12,11 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin([
         'options' => [
+            'enctype' => 'multipart/form-data',
             'class' => 'smart-form',
-            'id' => 'expediente-form',
-            'novalidate' => 'novalidate',
-            'enableClientValidation' => false
+            //'id' => 'expediente-form',
+            //'novalidate' => 'novalidate',
+            //'enableClientValidation' => false
         ]
     ]); ?>
     <fieldset>
@@ -23,7 +24,6 @@ use yii\widgets\ActiveForm;
             <section class="col col-10">
                 <label class="fileInput">
                     <?= $form->field($model, 'file')->fileInput() ?>
-
                 </label>
             </section>
             <section class="col col-10">
@@ -35,7 +35,7 @@ use yii\widgets\ActiveForm;
 
     </fieldset>
     <footer>
-        <?= Html::submitButton($model->isNewRecord ? ' Guardar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-primary' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? '<i class="fa fa-check"></i> Guardar' : '<i class="fa fa-edit"></i>Actualizar', ['class' => $model->isNewRecord ? 'btn btn-primary' : 'btn btn-primary']) ?>
         <button type="button" class="btn btn-default" onclick="window.history.back();">
            <i class="fa fa-times"></i> Cancelar
         </button>

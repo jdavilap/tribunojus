@@ -15,6 +15,7 @@ use backend\modules\litigante\models\PjLitigante;
 <div class="pj-mensaje-form">
 
     <?php $form = ActiveForm::begin([
+        'id'=> 'form-message',
         'options' => [
             'class' => 'smart-form',
         ]
@@ -27,6 +28,7 @@ use backend\modules\litigante\models\PjLitigante;
                 <label class="input">
                     <?= $form->field($model, 'id_litigante')->dropDownList(ArrayHelper::map(PjLitigante::find()->where(['id_abogado'=> PjAbogado::findOne(['username'=> Yii::$app->user->identity->username])->id])->all(),'id','username'),[
                         'class'=> 'select2',
+                        'prompt'=>'Seleccione un litigante...',
                     ]) ?>
                 </label>
             </section>
@@ -47,7 +49,7 @@ use backend\modules\litigante\models\PjLitigante;
     </fieldset>
     <footer>
         <div class="form-group">
-            <?= Html::submitButton($model->isNewRecord ? '<i class="fa fa-send"></i> Enviar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-primary' : 'btn btn-primary']) ?>
+            <?= Html::submitButton($model->isNewRecord ? '<i class="fa fa-send"></i> Enviar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-primary' : 'btn btn-primary','id'=> 'submit-mensaje']) ?>
             <button type="button" class="btn btn-default" onclick="window.history.back();">
                 <i class="fa fa-times"></i> Cancelar
             </button>

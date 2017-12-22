@@ -127,6 +127,42 @@ class PjMensajeController extends Controller
         }
     }
 
+    public function actionResponder($id)
+    {
+
+        $model = $this->findModel($id);
+
+        $newModel = new PjMensaje();
+
+        if ($model->load(Yii::$app->request->post())) {
+
+            $newModel->asunto = $model->asunto;
+            $newModel->contenido = $model->contenido;
+            $newModel->fecha = time();
+            $newModel->id_abogado = $model->id_abogado;
+            $newModel->id_litigante = $model->id_litigante;
+            $newModel->status = true;
+            if ($model->receptor == 'abogado') {
+                $newModel->receptor = 'litigante';
+            } else {
+                $newModel->receptor = 'abogado';
+            }
+
+            if ($newModel->save()) {
+                return $this->redirect(['index']);
+            } else {
+                return $this->render('responder', [
+                    'model' => $model,
+                ]);
+            }
+        } else {
+            return $this->render('responder', [
+                'model' => $model,
+            ]);
+        }
+
+    }
+
     /**
      * Deletes an existing PjMensaje model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

@@ -2,10 +2,12 @@
 
 namespace backend\modules\litigante\models;
 
+use backend\modules\admin\models\PjAbogado;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\modules\litigante\models\PjExpediente;
+use yii\db\ActiveQuery;
 
 /**
  * PjExpedienteSearch represents the model behind the search form about `backend\modules\litigante\models\PjExpediente`.
@@ -21,7 +23,7 @@ class PjExpedienteSearch extends PjExpediente
     {
         return [
             [['id', 'id_cliente'], 'integer'],
-            [['n_expendiente','globalSearch', 'juez', 'fecha_inicio', 'observacion', 'materia', 'etapa_procesal', 'ubicacion', 'sumilla', 'distrito_judicial', 'proceso', 'especialidad', 'estado', 'fecha_conclusion', 'motivo_conclusion'], 'safe'],
+            [['n_expendiente', 'globalSearch', 'juez', 'fecha_inicio', 'observacion', 'materia', 'etapa_procesal', 'ubicacion', 'sumilla', 'distrito_judicial', 'proceso', 'especialidad', 'estado', 'fecha_conclusion', 'motivo_conclusion'], 'safe'],
         ];
     }
 
@@ -50,14 +52,27 @@ class PjExpedienteSearch extends PjExpediente
      */
     public function search($params)
     {
-        $query = PjExpediente::find();
+        if (PjLitigante::findOne(['username' => Yii::$app->user->identity->username])) {
+            $query = PjExpediente::find()->where(['id_cliente' => PjLitigante::findOne(['username' => Yii::$app->user->identity->username])->id]);
+        } elseif (PjAbogado::findOne(['username' => Yii::$app->user->identity->username])) {
+
+            $query = PjExpediente::find()
+                ->where([
+                    'id_cliente' => PjLitigante::find()
+                        ->select(['id'])
+                        ->where([
+                            'id_abogado' => PjAbogado::findOne(['username' => Yii::$app->user->identity->username])->id])
+                ]);
+        } else {
+            $query = PjExpediente::find();
+        }
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination'=> [
-                'pageSize'=> 5
+            'pagination' => [
+                'pageSize' => 5
             ]
         ]);
 

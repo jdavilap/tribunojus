@@ -31,6 +31,8 @@
  *
  */
 
+
+
 pageSetUp();
 
 /*
@@ -55,6 +57,8 @@ pageSetUp();
 // pagefunction
 
 var pagefunction = function() {
+
+    $("[rel=tooltip]").tooltip();
 
     // Spinners
     $("#spinner").spinner();

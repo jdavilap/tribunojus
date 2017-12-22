@@ -66,6 +66,15 @@ class PjMensajeSearch extends PjMensaje
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination'=>[
+                'pageSize'=> 10
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'fecha' => SORT_DESC,
+
+                ]
+            ],
         ]);
 
         $this->load($params);

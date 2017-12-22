@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\bootstrap\Modal;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -11,6 +12,17 @@ $this->params['breadcrumbs'][] = ['label' => 'Anexos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="pj-anexo-view">
+    <?php
+    Modal::begin([
+        'header'=>'<h2><i class="fa fa-paperclip"></i> Anexos</h2>',
+        'id'=> 'modal_anexo',
+        'size'=>'modal-lg'
+    ]);
+
+    echo'<div id="modal_content_anexo"></div>';
+
+    Modal::end();
+    ?>
     <!-- START ROW -->
     <div class="row">
         <!-- NEW COL START -->

@@ -27,7 +27,7 @@ class AppAsset extends AssetBundle
         'js/app.config.js',
         //'js/plugin/jquery-touch/jquery.ui.touch-punch.min.js',
         'js/bootstrap/bootstrap.min.js',
-        //'js/notification/SmartNotification.min.js',
+        'js/notification/SmartNotification.min.js',
         'js/smartwidgets/jarvis.widget.min.js',
         'js/plugin/easy-pie-chart/jquery.easy-pie-chart.min.js',
         'js/plugin/sparkline/jquery.sparkline.min.js',
@@ -41,11 +41,12 @@ class AppAsset extends AssetBundle
         'js/app.min.js',
         'js/be/subexpediente.js',
         //'js/be/drow_list_update_abogado.js',
-        //'js/be/modal_file.js',
+        'js/be/modal_file.js',
         'js/be/plugins.js',
         //'js/be/tables.js',
         'js/datepicker-es.js',
         //'js/be/validar.js'
+        'js/be/submit_notification.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

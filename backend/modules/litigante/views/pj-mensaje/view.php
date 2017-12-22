@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <!-- end widget edit box -->
 
                     <!-- widget content -->
-                    <div class="widget-body no-padding">
+                    <div class="widget-body">
                         <?= DetailView::widget([
                             'model' => $model,
                             'attributes' => [
@@ -59,6 +59,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 //'id_abogado',
                                 //'id_litigante',
                             ],
+                            'options'=>[
+                                'class'=> 'table table-hover smart-form'
+                            ]
                         ]) ?>
                     </div>
                     <!-- end widget content -->

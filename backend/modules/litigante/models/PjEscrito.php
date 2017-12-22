@@ -3,16 +3,18 @@
 namespace backend\modules\litigante\models;
 
 use Yii;
-use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "pj_escrito".
  *
  * @property integer $id
- * @property string $fecha
+ * @property integer $fecha
+ * @property string $resolucion
  * @property string $escrito
  * @property string $observacion
- * @property boolean $notificacion
+ * @property string $sumilla
+ * @property string $acto
+ * @property boolean $bandera
  * @property integer $id_expediente
  * @property integer $id_sub_expediente
  *
@@ -22,13 +24,11 @@ use yii\behaviors\TimestampBehavior;
  */
 class PjEscrito extends \yii\db\ActiveRecord
 {
+
+    public $file;
     /**
      * @inheritdoc
      */
-
-    public $file;
-
-
     public static function tableName()
     {
         return 'pj_escrito';
@@ -40,12 +40,11 @@ class PjEscrito extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fecha','file'], 'required'],
-            [['fecha'], 'safe'],
-            [['file'], 'file'],
-            [['notificacion'], 'boolean'],
-            [['id_expediente', 'id_sub_expediente'], 'integer'],
-            [['escrito','observacion'], 'string', 'max' => 255],
+            [['fecha', 'id_expediente', 'id_sub_expediente'], 'integer'],
+            [['bandera'], 'boolean'],
+            [['file'], 'file','skipOnEmpty' => false],
+            [['resolucion'], 'string', 'max' => 64],
+            [['escrito', 'observacion', 'sumilla', 'acto'], 'string', 'max' => 255],
             [['id_expediente'], 'exist', 'skipOnError' => true, 'targetClass' => PjExpediente::className(), 'targetAttribute' => ['id_expediente' => 'id']],
             [['id_sub_expediente'], 'exist', 'skipOnError' => true, 'targetClass' => PjSubExpediente::className(), 'targetAttribute' => ['id_sub_expediente' => 'id']],
         ];
@@ -58,13 +57,15 @@ class PjEscrito extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'fecha' => 'FECHA',
-            'escrito' => 'ESCRITO',
-            'notificacion' => 'NOTIFICACIÓN',
-            'id_expediente' => 'EXPEDIENTE',
-            'id_sub_expediente' => 'SUB EXPEDIENTE',
-            'file'=> 'ARCHIVO',
-            'observacion'=> 'OBSERVACIÓN'
+            'fecha' => 'Fecha',
+            'resolucion' => 'Resolucion',
+            'escrito' => 'Escrito',
+            'observacion' => 'Observacion',
+            'sumilla' => 'Sumilla',
+            'acto' => 'Acto',
+            'bandera' => 'Bandera',
+            'id_expediente' => 'Id Expediente',
+            'id_sub_expediente' => 'Id Sub Expediente',
         ];
     }
 

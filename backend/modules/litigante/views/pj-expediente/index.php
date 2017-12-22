@@ -80,7 +80,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                 //'estado',
                                 // 'fecha_conclusion',
                                 // 'motivo_conclusion',
-                                'id_cliente',
+                                [
+                                    'attribute'=> 'id_cliente',
+                                    'value'=> function($model){
+                                        return \backend\modules\litigante\models\PjLitigante::findOne(['id'=>$model['id_cliente']])->username;
+                                    }
+                                ],
 
                                 ['class' => 'yii\grid\ActionColumn'],
                             ],

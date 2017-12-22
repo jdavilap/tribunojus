@@ -83,14 +83,13 @@ class PjAnexoController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 
+            $model->file = UploadedFile::getInstance($model, 'file');
 
             if ($model->file) {
 
-                $model->file = UploadedFile::getInstance($model, 'file');
+                $model->file->saveAs('anexo/' . $model->file->baseName . '.' . $model->file->extension);
 
-                $model->file->saveAs('anexoUpload/' . $model->file->baseName . '.' . $model->file->extension);
-
-                $model->anexo = 'anexoUpload/' . $model->file->baseName . '.' . $model->file->extension;
+                $model->anexo = 'anexo/' . $model->file->baseName . '.' . $model->file->extension;
 
                 $model->notificacion = true;
 
@@ -98,7 +97,7 @@ class PjAnexoController extends Controller
 
                 $model->id_escrito = $id;
             } else {
-                Yii::$app->session->setFlash('danger', '¡ Error ! Por favor seleccione un anexo, es requerido ');
+                Yii::$app->session->setFlash('danger', '¡ Error ! Por favor suba un ANEXO');
             }
 
             if (PjEscrito::findOne(['id' => $id])->id_expediente) {

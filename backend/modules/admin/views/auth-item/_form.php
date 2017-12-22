@@ -11,9 +11,9 @@ use yii\widgets\ActiveForm;
 <div class="auth-item-form">
 
     <?php $form = ActiveForm::begin([
+        'id' => 'item-form',
         'options' => [
             'class' => 'smart-form',
-            'id' => 'item-form',
             'novalidate' => 'novalidate'
         ]
     ]); ?>

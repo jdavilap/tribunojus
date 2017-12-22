@@ -52,7 +52,7 @@ class PjEscritoController extends Controller
                 'dataProvider' => $dataProvider,
             ]);
         } else {
-            throw new ForbiddenHttpException;
+            throw new ForbiddenHttpException('¡Prohibido! Usted no tiene permisos para realizar esta acción.');
         }
     }
 
@@ -82,19 +82,13 @@ class PjEscritoController extends Controller
         $model = new PjEscrito();
         $email = '';
 
+
         if ($model->load(Yii::$app->request->post())) {
 
-            if ($model->file) {
-                $model->file = UploadedFile::getInstance($model, 'file');
+            $model->file = UploadedFile::getInstance($model, 'file');
 
-                $model->file->saveAs('fileUpload/' . $model->file->baseName . '.' . $model->file->extension);
+            $model->bandera = true;
 
-                $model->escrito = 'fileUpload/' . $model->file->baseName . '.' . $model->file->extension;
-
-                $model->notificacion = true;
-            } else {
-                Yii::$app->session->setFlash('danger', '¡ Error ! Por favor seleccione un archivo, es requerido ');
-            }
 
             if ($tipo == 'expediente') {
                 $email = User::findOne(['username' => PjLitigante::findOne(['id' => PjExpediente::findOne(['id' => $temp])->id_cliente])->username])->email;
@@ -115,9 +109,27 @@ class PjEscritoController extends Controller
                 ->setTextBody('Su expediente ha sido actualizado con un nuevo escrito, para revizarlo revise el sitio oficial www.tribunojus.pe')
                 ->setHtmlBody($html_body);
 
-            if ($model->save()) {
+            if ($model->validate()) {
 
-                $value->send();
+                $name_temp =str_split($model->file->baseName);
+
+                $name_result = '';
+
+                foreach($name_temp as $n){
+                    $name_result .= trim($n);
+                }
+
+                $model->file->saveAs('escrito/' . $name_result . '.' . $model->file->extension);
+
+                $model->escrito = 'escrito/' . $name_result . '.' . $model->file->extension;
+
+                $model->save();
+
+                if($value->send()){
+                    Yii::$app->session->setFlash('success','Notificación enviada con exito');
+                }else{
+                    Yii::$app->session->setFlash('danger','SoftMailer no encontro la ninguna configuracion del servidor');
+                }
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('create', [

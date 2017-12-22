@@ -14,9 +14,9 @@ use backend\modules\admin\models\AuthItem;
 <div class="auth-assignment-form">
 
     <?php $form = ActiveForm::begin([
+        'id' => 'assignment-form',
         'options' => [
             'class' => 'smart-form',
-            'id' => 'item-form',
             'novalidate' => 'novalidate'
         ]
     ]); ?>

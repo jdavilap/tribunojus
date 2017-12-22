@@ -30,7 +30,7 @@ class AuthAssignment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['item_name', 'user_id'], 'required','message'=> 'Este valor es requerido'],
+            [['item_name','user_id'], 'required','message'=> 'Este valor es requerido'],
             [['created_at','updated_at'], 'integer'],
             [['item_name', 'user_id'], 'string', 'max' => 64],
             [['item_name'], 'exist', 'skipOnError' => true, 'targetClass' => AuthItem::className(), 'targetAttribute' => ['item_name' => 'name']],

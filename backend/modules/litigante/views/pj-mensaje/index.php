@@ -67,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 if (!$model['status']) {
                                     return ['class' => 'default'];
                                 } else {
-                                    return ['class' => 'danger'];
+                                    return ['class' => 'success'];
                                 }
                             },
                             'summary' => false,
@@ -84,7 +84,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                 // 'id_litigante',
 
                                 ['class' => 'yii\grid\ActionColumn',
-                                    'template'=> '{view}'
+                                    'template'=> '{view} {delete} {responder}',
+                                    'buttons' => [
+                                        'responder' => function ($url, $model) {
+                                            return Html::a('<i class="fa fa-reply"></i>',['responder','id' => $model->id], [
+                                                'title' => 'responder'
+                                            ]);
+                                        }
+                                    ]
+
                                 ],
                             ],
                         ]); ?>

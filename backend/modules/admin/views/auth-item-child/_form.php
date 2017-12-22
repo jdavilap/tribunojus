@@ -13,9 +13,9 @@ use backend\modules\admin\models\AuthItem;
 <div class="auth-item-child-form">
 
     <?php $form = ActiveForm::begin([
+        'id'=> 'item-child-form',
         'options' => [
             'class' => 'smart-form',
-            'id' => 'item-form',
             'novalidate' => 'novalidate'
         ]
     ]); ?>

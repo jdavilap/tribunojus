@@ -12,17 +12,17 @@ use backend\modules\litigante\models\PjEscrito;
  */
 class PjEscritoSearch extends PjEscrito
 {
+
+    public $globalSearch;
     /**
      * @inheritdoc
      */
-    public $globalSearch;
-
     public function rules()
     {
         return [
-            [['id', 'id_expediente', 'id_sub_expediente'], 'integer'],
-            [['fecha', 'escrito','globalSearch'], 'safe'],
-            [['notificacion'], 'boolean'],
+            [['id', 'fecha', 'id_expediente', 'id_sub_expediente'], 'integer'],
+            [['resolucion', 'escrito', 'observacion', 'sumilla', 'acto','globalSearch'], 'safe'],
+            [['bandera'], 'boolean'],
         ];
     }
 
@@ -67,7 +67,20 @@ class PjEscritoSearch extends PjEscrito
             return $dataProvider;
         }
 
-        $query->orFilterWhere(['like', 'escrito', $this->globalSearch]);
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'fecha' => $this->fecha,
+            'bandera' => $this->bandera,
+            'id_expediente' => $this->id_expediente,
+            'id_sub_expediente' => $this->id_sub_expediente,
+        ]);
+
+        $query->andFilterWhere(['like', 'resolucion', $this->resolucion])
+            ->andFilterWhere(['like', 'escrito', $this->escrito])
+            ->andFilterWhere(['like', 'observacion', $this->observacion])
+            ->andFilterWhere(['like', 'sumilla', $this->sumilla])
+            ->andFilterWhere(['like', 'acto', $this->acto]);
 
         return $dataProvider;
     }

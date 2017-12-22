@@ -55,7 +55,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </section>
                             </div>
                         </div>
-
                         <?php Pjax::begin(); ?>    <?= GridView::widget([
                             'dataProvider' => $dataProvider,
                             //'filterModel' => $searchModel,
@@ -67,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 //'id',
                                 'fecha:date',
                                 'escrito',
-                                'notificacion:boolean',
+                                //'notificacion:boolean',
                                 'id_expediente',
                                  'id_sub_expediente',
 
